@@ -3,7 +3,10 @@
 Irgendwas mit Py - für Python
 - PyHouse
 - PyHome
+- MyPyHome
 - SmartPyHome
+- SmartPy
+
 
 ##Features
 - Szenen, die für x Objekte Wert x setzen
