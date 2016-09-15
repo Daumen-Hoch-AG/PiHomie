@@ -16,6 +16,7 @@ Irgendwas mit Py - für Python
   * Zum Beispiel Jalousien nur schließen nachdem vorher das Licht im Raum eingeschaltet wurde.
 - Logging von jeglichen Interaktionen und Events
 - Automatische Anwesenheitserkennung durhc Bluetooth oder Wlan des Handys
+
 ##Struktur
 - Zweiteilung in Engine (Logik) und Panel (Web-Panel und später APPs?)
   * DB REST API
