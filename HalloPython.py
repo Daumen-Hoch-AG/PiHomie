@@ -3,8 +3,6 @@
 
 import os
 
-print("Hallo welt1")
-
-# Hey
+print "Hallo welt1"
 print "Hallo neue Welt"
 
