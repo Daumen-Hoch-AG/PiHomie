@@ -6,6 +6,7 @@ Irgendwas mit Py - für Python
 - MyPyHome
 - SmartPyHome
 - SmartPy
+- Shawn (**S**mart**H**ome-System with **A**utomated and **W**ireless **N**etwork)
 
 
 ##Features
