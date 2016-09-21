@@ -7,7 +7,7 @@ Irgendwas mit Py - für Python
 - SmartPyHome
 - SmartPy
 - Shawn (**S**mart**H**ome-System with **A**utomated and **W**ireless **N**etwork)
-- Smash (**S**imply **m**anage **a**ll **s**mart**h**omes
+- Smash (**S**imply **m**anage **a**ll **s**mart**h**omes)
 
 
 ##Features
