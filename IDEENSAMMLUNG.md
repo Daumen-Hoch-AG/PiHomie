@@ -22,6 +22,10 @@ Irgendwas mit Py - für Python
 	* Zum Beispiel Jalousien nur schließen nachdem vorher das Licht im Raum eingeschaltet wurde.
 - Logging von jeglichen Interaktionen und Events
 - Automatische Anwesenheitserkennung durch Bluetooth oder Wlan des Handys
+- Tarifmanagement:
+	* Übersicht von Verbrauchstarifen
+	* aktueller Verbrauch ist/soll
+	* z.B. Inklusivminuten, Strom-/Gaskontingent und Verbrauch
 
 ##Struktur
 - Zweiteilung in Engine (Logik) und Panel (Web-Panel und später APPs?)
