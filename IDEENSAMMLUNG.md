@@ -11,3 +11,11 @@
 	* zur Diskussion: <a href="https://github.com/Daumen-Hoch-AG/SmartHouse/issues/2">Issue #2</a>
 	* zur Prioritätenliste: <a href="https://github.com/Daumen-Hoch-AG/SmartHouse/projects/3">Project #3</a>
 	
+	
+##Codestruktur
+- Dateinamen für Sensoren und Aktoren: NameOberklasse_Hersteller_Typ.py Bsp: RollerShutter_Fibaro_fg222.py
+
+##Programmierung
+- Logging Service, auftrennen in Exception-Log und Normales-Log
+	* Jede Exception führt zu einem Log-Eintrag
+	* Jede Aktion z.B. Rolladen geschlossen o.ä. führt zu einem Log-Eintrag
