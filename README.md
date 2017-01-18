@@ -52,8 +52,9 @@ Der Fortschritt der geplanten Features wird bei den [Milestones in diesem Projek
 
 <a name="Protokollunterstützungen"></a>
 ### Liste der Protokollunterstützungen
-:soon: zWave<br>
-:soon: 433 MHz Funk<br>
+:soon: zWave (mit [RaZberry](http://razberry.z-wave.me/))<br>
+:soon: 433 MHz Funk (mit [TK Remote Bricklet](https://www.tinkerforge.com/de/shop/bricklets/remote/remote-switch-bricklet.html))<br>
+:soon: 433,32 MHz (mit [CUL-Stick](http://shop.busware.de/product_info.php/cPath/1/products_id/44))<br>
 :soon: Homematic Funk<br>
 :soon: Bluetooth<br>
 :soon: IR-Steuerung<br>
