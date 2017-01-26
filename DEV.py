@@ -19,12 +19,16 @@ import modules.hardware.RollerShutter as RollerShutter
 import modules.hardware.RollerShutter_ZWAVE as RollerShutter_ZWAVE
 
 
-# Tests
-print "Log = Logging.Logger()"
-Log = Logging.Logger()
+print "Teste Logging-Service...."
+Log = Logging.Logger(first=True)
 
 
 if __name__ == '__main__':
-	print "Zum Testen und importieren in eine interaktive Python-Shell"
+	print 3*"\n"
 	# from DEV import *
-	# e.g. R = RollerShutter.Actor(1, "MyFoo")
+	print "Zum Testen und importieren in eine interaktive Python-Shell\n"
+	print '> R = RollerShutter.Actor(1, "Foo")'
+	R = RollerShutter.Actor(1, "Foo")
+	#print '> R.log("Bar", "status")'
+	#R.log("Bar", "error")
+	

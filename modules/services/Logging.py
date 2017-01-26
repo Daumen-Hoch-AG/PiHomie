@@ -7,7 +7,13 @@ import datetime
 
 class Logger(object):
 	"""Protokollierungsobjekt für Meldungen aller Art"""
-	def __init__(self, logDir=os.path.join(os.path.dirname(os.path.realpath('__file__')), 'log'), f_status="status.log", f_error="error.log", f_info="info.log"):
+	def __init__(self, first=False):
+		# Options (ggf. auslagern in cfg)
+		logDir = os.path.join(os.path.dirname(os.path.realpath('__file__')), 'log')
+		f_status = "status.log"
+		f_error = "error.log"
+		f_info = "info.log"
+		self.stampformat = "[%d/%b/%Y %H:%M:%S %z]"
 		# Filehandler
 		self.STATUS = os.path.join(logDir, f_status)
 		self.ERROR = os.path.join(logDir, f_error)
@@ -18,14 +24,14 @@ class Logger(object):
 				checkFile = open(fp)
 			except IOError as e:
 				print "Keine Berechtigung bei: {}".format(fp)
-				raise
+				raise ########### <<<<<<<<< Exception RAISE !
 			else:
 				checkFile.close()
-		# Options (ggf. auslagern in cfg)
-		self.stampformat = "[%d/%b/%Y %H:%M:%S %z]"
-		# Return
-		print "Logger initialisiert. Weitere Meldungen werden folgendermaßen umgeleitet:"
-		print "Status	: {}\nFehler	: {}\nInfos	: {}".format(self.STATUS, self.ERROR, self.INFO)
+		# Startmessage
+		if first:
+			print "Logger initialisiert. Weitere Meldungen werden folgendermaßen umgeleitet:"
+			print "Status	: {}\nFehler	: {}\nInfos	: {}".format(self.STATUS, self.ERROR, self.INFO)
+
 
 	def getTime(self):
 		# Timestamp erstellen (Using local time !)
