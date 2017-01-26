@@ -16,8 +16,12 @@ import modules.services.Schedule as Schedule
 
 # Module - Hardware
 import modules.hardware.RollerShutter as RollerShutter
-import modules.hardware.RollerShutter_Fibaro_FG222 as RollerShutter_Fibaro_FG222
+import modules.hardware.RollerShutter_ZWAVE as RollerShutter_ZWAVE
 
+
+# Tests
+print "Log = Logging.Logger()"
+Log = Logging.Logger()
 
 
 if __name__ == '__main__':
