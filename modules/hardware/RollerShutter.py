@@ -3,7 +3,7 @@
 
 
 class Actor(object):
-	"""Allgemeiner Aktor für Rolladensteuerung"""
+	"""Schnittstellendefinition für Rolladenaktoren"""
 	def __init__(self, id, nickname, description=""):
 		self.id = id
 		self.nickname = nickname
@@ -16,12 +16,12 @@ class Actor(object):
 	def setDown(self):
 		pass
 
-	def setPosition(self, direction, val):
+	def setPosition(self, position):
 		pass
 
 
 class Sensor(object):
-	"""Allgemeiner Sensor für Rolladensteuerung"""
+	"""Schnittstellendefinition für Rolladensensoren"""
 	def __init__(self, id, nickname, description=""):
 		self.id = id
 		self.nickname = nickname
@@ -38,4 +38,3 @@ class Sensor(object):
 
 if __name__ == "__main__":
 	print "Direct access not allowed..."
-	#testActor = RollerShutter_Fibaro_fg222.Actor()
