@@ -8,7 +8,7 @@ import datetime
 class Logger(object):
 	"""Protokollierungsobjekt für Meldungen aller Art"""
 	def __init__(self, first=False):
-		# Options (ggf. auslagern in cfg)
+		# Options und Pfade (ggf. auslagern in cfg)
 		logDir = os.path.join(os.path.dirname(os.path.realpath('__file__')), 'log')
 		f_status = "status.log"
 		f_error = "error.log"
