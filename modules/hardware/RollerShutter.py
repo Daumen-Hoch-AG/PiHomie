@@ -3,15 +3,13 @@
 
 
 from ..services.Logging import Logger # Relative imports nur mit from x import x
+import Generic
 
 
-class Actor(object):
+class Actor(Generic.Actor):
 	"""Schnittstellendefinition für Rolladenaktoren"""
 	def __init__(self, id, nickname, description=""):
-		self.id = id
-		self.nickname = nickname
-		self.description = description
-		self.log("Hello, I am the ACTOR {} and my ID is {}".format(nickname, id), "status")
+		super(Generic.Actor, self).__init__(id, nickname, description="")
 
 	def setUp(self):
 		pass
@@ -22,22 +20,11 @@ class Actor(object):
 	def setPosition(self, position):
 		pass
 
-	def log(self, text, mode="info", ts=False):
-		if mode == "error":
-			Logger().error(text, ts)
-		elif mode == "status":
-			Logger().status(text, ts)
-		elif mode == "info":
-			Logger().info(text, ts)
 
-
-class Sensor(object):
+class Sensor(Generic.Sensor):
 	"""Schnittstellendefinition für Rolladensensoren"""
 	def __init__(self, id, nickname, description=""):
-		self.id = id
-		self.nickname = nickname
-		self.description = description
-		print "For the Log: 'Hello, I am the SENSOR {} and my ID is {}".format(nickname, id)
+		super(Generic.Sensor, self).__init__(id, nickname, description="")
 
 	def getPosition(self):
 		pass

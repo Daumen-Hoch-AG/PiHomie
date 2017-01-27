@@ -10,7 +10,7 @@ import RollerShutter
 class GenericActor(RollerShutter.Actor):
 	"""Generic Aktor: ZWAVE RollerShutter"""
 	def __init__(self, id, deviceId, instanceId, nickname, description=""):
-		super(Actor, self).__init__(id, nickname, description="")
+		super(RollerShutter.Actor, self).__init__(id, nickname, description="")
 
 	def setUp(self):
 		print "Fake URI:"
@@ -52,17 +52,17 @@ class GenericSensor(RollerShutter.Sensor):
 class Fibaro_FGRM_222_Actor(GenericActor):
 	"""Spezieller Aktor: Fibaro RollerShutter 2 (FG-222)"""
 	def __init__(self, id, nickname, description=""):
-		super(Actor, self).__init__(id, nickname, description="")
+		super(GenericActor, self).__init__(id, nickname, description="")
 
 	def setPosition(self, position):
 		print "Spezielle behandlung von up+down um das eigentlich implementierte Verhalten eines Zwave Rolladenaktors nachzuarmen (Spezialfall für den FGM222)"
 		return
 
 
-class Fibaro_FGRM_222_Actor(GenericActor):
+class Fibaro_FGRM_222_Actor(GenericSensor):
 	"""Spezieller Aktor: Fibaro RollerShutter 2 (FG-222)"""
 	def __init__(self, id, nickname, description=""):
-		super(Actor, self).__init__(id, nickname, description="")
+		super(GenericSensor, self).__init__(id, nickname, description="")
 
 
 # ? anderer Hersteller: Modell ?
