@@ -1,15 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
-from ..services.Logging import Logger # Relative imports nur mit from x import x
 import Generic
 
 
 class Actor(Generic.Actor):
 	"""Schnittstellendefinition für Rolladenaktoren"""
-	def __init__(self, id, nickname, description=""):
-		super(Generic.Actor, self).__init__(id, nickname, description="")
+	def __init__(self, id, nickname, ServiceObject, description=""):
+		super(Actor, self).__init__(id, nickname, ServiceObject, description="")
 
 	def setUp(self):
 		pass
@@ -23,8 +21,8 @@ class Actor(Generic.Actor):
 
 class Sensor(Generic.Sensor):
 	"""Schnittstellendefinition für Rolladensensoren"""
-	def __init__(self, id, nickname, description=""):
-		super(Generic.Sensor, self).__init__(id, nickname, description="")
+	def __init__(self, id, nickname, ServiceObject, description=""):
+		super(Sensor, self).__init__(id, nickname, ServiceObject, description="")
 
 	def getPosition(self):
 		pass

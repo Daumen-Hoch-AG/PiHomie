@@ -1,33 +1,55 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Wo sammelt man die Imports ???
-# (wenn auch Klassen darauf zugreifen)
+# Modules for main
 import os
-import datetime
-import requests
-################################
+import ConfigParser
 
 
-# Module - Services
-import modules.services.Logging as Logging
+# Modules - Services
+import modules.services.Systemservices as Systemservices
 import modules.services.Forecast as Forecast
 import modules.services.Schedule as Schedule
 
-# Module - Hardware
+# Modules - Hardware
+import modules.hardware.Generic as Generic
 import modules.hardware.RollerShutter as RollerShutter
 
 
-print "Teste Logging-Service...."
-Log = Logging.Logger(first=True)
+
+print "Starting Systemservices..."
+SysSrv = dict()
+
+print "-> Options:"
+confFile = os.path.join(os.path.dirname(os.path.realpath('__file__')), 'conf', 'core.cfg'),
+SysSrv['Opt'] = ConfigParser.ConfigParser()
+SysSrv['Opt'].read(confFile)
+print " * loaded *"
+
+
+print "-> Logging:"
+SysSrv['Logger'] = Systemservices.Logger(SysSrv)
+print " * loaded *"
+
+
+print "[- FINISH -]"
+
+
+#print 2*"\n","--- FOR DEV : ---"
+#
+#print 'G = Generic.Actor(1,"Fo",SysSrv)'
+#GA = Generic.Actor(1,"Foo",SysSrv)
+#print 'RS = RollerShutter.Sensor(2, "Bar", SysSrv)'
+#RS = RollerShutter.Sensor(2, "Bar", SysSrv)
+#
+#print "[ - FINISHED - ]"
 
 
 if __name__ == '__main__':
-	print 3*"\n"
+	print 2*"\n"
 	# from DEV import *
 	print "Zum Testen und importieren in eine interaktive Python-Shell\n"
-	print '> R = RollerShutter.Actor(1, "Foo")'
-	R = RollerShutter.Actor(1, "Foo")
-	#print '> R.log("Bar", "status")'
-	#R.log("Bar", "error")
+	#print 'G = Generic.Actor(1,"Fo",SysSrv)'
+	#GA = Generic.Actor(1,"Foo",SysSrv)
+	#RS = RollerShutter.Actor(2, "Bar", SysSrv)
 	
