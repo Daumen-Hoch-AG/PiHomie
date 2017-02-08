@@ -9,40 +9,56 @@ import RollerShutter
 
 class GenericActor(RollerShutter.Actor):
 	"""Generic Aktor: ZWAVE RollerShutter"""
-	def __init__(self, id, deviceId, instanceId, nickname, description=""):
-		super(RollerShutter.Actor, self).__init__(id, nickname, description="")
+	def __init__(self, id, nickname, ServiceObject, description=""):
+		super(RollerShutter.Actor, self).__init__(id, nickname, ServiceObject, description="")
+		# Diese Informationen holen:
+		self.deviceId = 0 
+		self.instanceId = 0
+		# --------------------------
+
+
+	def setParam(self, bezeichner, wert):
+		print "Fake URI:"
+		print "http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[{}}].Set({})".format(self.deviceId, instanceId, bezeichner, wert)
+		return
+
+
+	#(( NON STANDARD FUNCTIONS ))#
+
+	def setPosition(self, percentage):
+		print "Fake URI:"
+		print "http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[37].Set({})".format(self.deviceId, instanceId, percentage)
+		return
 
 	def setUp(self):
 		print "Fake URI:"
 		print "http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[37].Set(255)".format(self.deviceId, instanceId)
 		return
-	
+
 	def setDown(self):
 		print "Fake URI:"
 		print "http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[37].Set(0)".format(self.deviceId, instanceId)
 		return
 
-	def setPosition(self, position):
-		print "Fake URI:"
-		"http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[38].Set({})".format(self.deviceId, instanceId)
-		return
+
 
 
 # allgemeiner Sensor: zWave
 
 class GenericSensor(RollerShutter.Sensor):
 	"""Generic Sensor: ZWAVE RollerShutter"""
-	def __init__(self, id, nickname, description=""):
+	def __init__(self, id, nickname, ServiceObject, description=""):
 		self.id = id
 		self.nickname = nickname
 		self.description = description
-		print "For the Log: 'Hello, I am the SENSOR {} and my ID is {}".format(nickname, id)
+		self.log.status("For the Log: 'Hello, I am the SENSOR {} and my ID is {}".format(nickname, id))
+
+
+	#(( NON STANDARD FUNCTIONS ))#
 
 	def getPosition(self):
 		pass
-	
-	def getSystemStatus(self):
-		pass
+
 
 
 #=========> Spezialisierte Klassen <=============================#
@@ -51,8 +67,8 @@ class GenericSensor(RollerShutter.Sensor):
 
 class Fibaro_FGRM_222_Actor(GenericActor):
 	"""Spezieller Aktor: Fibaro RollerShutter 2 (FG-222)"""
-	def __init__(self, id, nickname, description=""):
-		super(GenericActor, self).__init__(id, nickname, description="")
+	def __init__(self, id, nickname, ServiceObject, description=""):
+		super(GenericActor, self).__init__(id, nickname, ServiceObject, description="")
 
 	def setPosition(self, position):
 		print "Spezielle behandlung von up+down um das eigentlich implementierte Verhalten eines Zwave Rolladenaktors nachzuarmen (Spezialfall für den FGM222)"
@@ -61,8 +77,8 @@ class Fibaro_FGRM_222_Actor(GenericActor):
 
 class Fibaro_FGRM_222_Actor(GenericSensor):
 	"""Spezieller Aktor: Fibaro RollerShutter 2 (FG-222)"""
-	def __init__(self, id, nickname, description=""):
-		super(GenericSensor, self).__init__(id, nickname, description="")
+	def __init__(self, id, nickname, ServiceObject, description=""):
+		super(GenericSensor, self).__init__(id, nickname, ServiceObject, description="")
 
 
 # ? anderer Hersteller: Modell ?

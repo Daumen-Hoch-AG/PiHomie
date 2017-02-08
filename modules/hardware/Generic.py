@@ -10,7 +10,7 @@ class Actor(object):
 		self.log = ServiceObject['Logger']
 		self.log.status("Hello, I am the ACTOR {} and my ID is {}".format(nickname, id))
 
-	def setParam(bezeichner, wert):
+	def setParam(self, bezeichner, wert):
 		self.log.error("Der Wert: {}={} konnte nicht gesetzt werden, da die Methode dafür noch nicht definiert ist.".format(bezeichner, wert))
 
 
@@ -24,13 +24,13 @@ class Sensor(object):
 		self.log = ServiceObject['Logger']
 		self.log.status("Hello, I am the SENSOR {} and my ID is {}".format(nickname, id))
 
-	def getMainValue():
+	def getMainValue(self):
 		self.log.error("Der Hauptwert für dieses Gerät konnte nicht zurückgegeben werden, da die Methode noch nicht definiert ist.")
 
-	def getAllValuesAsDictionary():
+	def getAllValuesAsDictionary(self):
 		self.log.error("Die Werte konnte nicht zurückgegeben werden, da die Methode dafür noch nicht definiert ist.")
 
-	def getValue(bezeichner):
+	def getValue(self, bezeichner):
 		self.log.error("Der Wert für den Schlüssel '{}' konnte nicht zurückgegeben werden, da die Methode dafür noch nicht definiert ist.".format(bezeichner))
 
 

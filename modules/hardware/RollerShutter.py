@@ -9,13 +9,7 @@ class Actor(Generic.Actor):
 	def __init__(self, id, nickname, ServiceObject, description=""):
 		super(Actor, self).__init__(id, nickname, ServiceObject, description="")
 
-	def setUp(self):
-		pass
-
-	def setDown(self):
-		pass
-
-	def setPosition(self, position):
+	def setParam(self, bezeichner, wert):
 		pass
 
 
@@ -24,10 +18,14 @@ class Sensor(Generic.Sensor):
 	def __init__(self, id, nickname, ServiceObject, description=""):
 		super(Sensor, self).__init__(id, nickname, ServiceObject, description="")
 
-	def getPosition(self):
+	def getMainValue(self):
+		"""Position des Rolladens"""
 		pass
-	
-	def getSystemStatus(self):
+
+	def getAllValuesAsDictionary(self):
+		pass
+
+	def getValue(self, bezeichner):
 		pass
 
 
