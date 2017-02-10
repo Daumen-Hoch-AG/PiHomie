@@ -9,8 +9,14 @@ class Actor(Generic.Actor):
 	def __init__(self, id, nickname, ServiceObject, description=""):
 		super(Actor, self).__init__(id, nickname, ServiceObject, description="")
 
+
 	def setParam(self, bezeichner, wert):
 		pass
+
+	def setAllValuesAsDictionary(self, valDict):
+		for bezeichner in valDict:
+			self.setParam(bezeichner, valDict[bezeichner])
+
 
 
 class Sensor(Generic.Sensor):
@@ -18,15 +24,22 @@ class Sensor(Generic.Sensor):
 	def __init__(self, id, nickname, ServiceObject, description=""):
 		super(Sensor, self).__init__(id, nickname, ServiceObject, description="")
 
-	def getMainValue(self):
-		"""Position des Rolladens"""
-		pass
 
 	def getAllValuesAsDictionary(self):
-		pass
+		return {
+			'id':self.id,
+			'Position':[0, "% geschlossen"],
+			"isDown":False, "isUp":False,
+			"rollingSeconds":0.0
+			}
+
+	def getMainValue(self):
+		"""Position des Rolladens"""
+		val = self.getAllValuesAsDictionary()['Position']
+		return val
 
 	def getValue(self, bezeichner):
-		pass
+		return self.getAllValuesAsDictionary()[bezeichner]
 
 
 

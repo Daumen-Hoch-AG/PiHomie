@@ -56,7 +56,7 @@ if __name__ == '__main__':
 	print "Zum Testen und importieren in eine interaktive Python-Shell\n"
 
 	print "H.getValue"
-	print H.getValue('Temperatur')
+	print H.getValue('Feuchte')
 	print "T.getValue"
 	print T.getValue('Temperatur')
 	#GA = Generic.Actor(1,"Foo",SysSrv)

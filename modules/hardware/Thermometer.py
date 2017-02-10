@@ -11,7 +11,7 @@ class Sensor(Generic.Sensor):
 
 
 	def getAllValuesAsDictionary(self):
-		return {'Temperatur':[0, u"°C"]}
+		return {'Temperatur':[0, "°C"]}
 
 	def getMainValue(self):
 		"""Temperatur in Grad Celsius"""

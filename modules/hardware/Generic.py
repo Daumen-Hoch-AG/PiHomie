@@ -1,9 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Module für Sensoren/Aktoren
-import spidev
-
 
 class Actor(object):
 	"""Schnittstellendefinition für Actoren"""
@@ -17,6 +14,8 @@ class Actor(object):
 	def setParam(self, bezeichner, wert):
 		self.log.error("Der Wert: {}={} konnte nicht gesetzt werden, da die Methode dafür noch nicht definiert ist.".format(bezeichner, wert))
 
+	def setAllValuesAsDictionary(self, valDict):
+		self.log.error("Es konnten keine Werte gesetzt werden, da die Methode dafür noch nicht definiert ist. Werte: {}".format(valDict))
 
 
 class Sensor(object):

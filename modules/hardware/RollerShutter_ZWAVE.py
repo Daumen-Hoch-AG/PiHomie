@@ -16,29 +16,15 @@ class GenericActor(RollerShutter.Actor):
 		self.instanceId = 0
 		# --------------------------
 
-
 	def setParam(self, bezeichner, wert):
-		print "Fake URI:"
-		print "http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[{}}].Set({})".format(self.deviceId, instanceId, bezeichner, wert)
-		return
-
-
-	#(( NON STANDARD FUNCTIONS ))#
-
-	def setPosition(self, percentage):
-		print "Fake URI:"
-		print "http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[37].Set({})".format(self.deviceId, instanceId, percentage)
-		return
-
-	def setUp(self):
-		print "Fake URI:"
-		print "http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[37].Set(255)".format(self.deviceId, instanceId)
-		return
-
-	def setDown(self):
-		print "Fake URI:"
-		print "http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[37].Set(0)".format(self.deviceId, instanceId)
-		return
+		if bezeichner == "isUp" or bezeichner == "isDown":
+			# commandClasses 37
+			print " FAKE: http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[37].Set({})".format(self.deviceId, instanceId, wert)
+		else if bezeichner == "Position":
+			# commandClasses 38
+			print " FAKE: http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[38].Set({})".format(self.deviceId, instanceId, wert)
+		else:
+			self.log.error("Parameter '{}' ist so nicht änderbar")
 
 
 
@@ -70,9 +56,8 @@ class Fibaro_FGRM_222_Actor(GenericActor):
 	def __init__(self, id, nickname, ServiceObject, description=""):
 		super(GenericActor, self).__init__(id, nickname, ServiceObject, description="")
 
-	def setPosition(self, position):
-		print "Spezielle behandlung von up+down um das eigentlich implementierte Verhalten eines Zwave Rolladenaktors nachzuarmen (Spezialfall für den FGM222)"
-		return
+	#def setPosition(self, position):
+		# Berechnung der notwendigen Motorlaufzeit um ca. auf die angegebene Position zu fahren
 
 
 class Fibaro_FGRM_222_Actor(GenericSensor):
