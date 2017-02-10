@@ -32,6 +32,11 @@ Obwohl ein Fokus auf sichere Übetragungen und Absicherung des Systems gelegt wi
 <a name="Installation"></a>
 ## Installation
 ### 1. Server aufsetzen
+
+Erforderliche Pakete:
+
+	pip install spidev
+
 ### 2. Geräte einbinden/anlernen
 ### 3. Grundeinstellungen
 

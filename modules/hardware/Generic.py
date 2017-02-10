@@ -1,6 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# Module für Sensoren/Aktoren
+import spidev
+
+
 class Actor(object):
 	"""Schnittstellendefinition für Actoren"""
 	def __init__(self, id, nickname, ServiceObject, description=""):

@@ -14,29 +14,31 @@ import modules.services.Schedule as Schedule
 # Modules - Hardware
 import modules.hardware.Generic as Generic
 import modules.hardware.RollerShutter as RollerShutter
+import modules.hardware.Hygrometer_GPIO as Hygrometer_GPIO
 
 
 
-print "Starting Systemservices..."
+print "[ Starte Systemservices ]"
 SysSrv = dict()
 
-print "-> Options:"
+print "-> Options..."
 confFile = os.path.join(os.path.dirname(os.path.realpath('__file__')), 'conf', 'core.cfg'),
 SysSrv['Opt'] = ConfigParser.ConfigParser()
 SysSrv['Opt'].read(confFile)
-print " * loaded *"
 
 
-print "-> Logging:"
+print "-> Logging..."
 SysSrv['Logger'] = Systemservices.Logger(SysSrv)
-print " * loaded *"
 
 
 print "[- FINISH -]"
 
 
-#print 2*"\n","--- FOR DEV : ---"
+print 2*"\n","--- FOR DEV : ---"
 #
+print 'H = Hygrometer_GPIO.Sensor(1,"Fo", SysSrv)'
+H = Hygrometer_GPIO.Sensor(1,"Fo", SysSrv)
+H.getValue('Temperatur')
 #print 'G = Generic.Actor(1,"Fo",SysSrv)'
 #GA = Generic.Actor(1,"Foo",SysSrv)
 #print 'RS = RollerShutter.Sensor(2, "Bar", SysSrv)'
@@ -49,7 +51,8 @@ if __name__ == '__main__':
 	print 2*"\n"
 	# from DEV import *
 	print "Zum Testen und importieren in eine interaktive Python-Shell\n"
-	#print 'G = Generic.Actor(1,"Fo",SysSrv)'
+	print 'H = Hygrometer_GPIO.Sensor(1,"Fo", SysSrv)'
+	H = Hygrometer_GPIO.Sensor(1,"Fo", SysSrv)
 	#GA = Generic.Actor(1,"Foo",SysSrv)
 	#RS = RollerShutter.Actor(2, "Bar", SysSrv)
 	

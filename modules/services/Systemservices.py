@@ -29,10 +29,11 @@ class Logger(object):
 		# Check Permissions
 		for fp in [self.STATUS, self.ERROR, self.INFO]:
 			try:
-				checkFile = open(fp)
+				checkFile = open(fp, 'a')
 			except IOError as e:
 				print "Keine Berechtigung bei: {}".format(fp)
-				raise ########### <<<<<<<<< Exception RAISE !
+				print "Logger wurde nicht initialisiert !"
+				return
 			else:
 				checkFile.close()
 
