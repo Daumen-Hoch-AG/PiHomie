@@ -11,11 +11,11 @@ class Sensor(Generic.Sensor):
 
 
 	def getAllValuesAsDictionary(self):
-		return {'Temperatur':[0, "°C"], 'Feuchte':[0, "% rel."]}
+		return {'Temperatur':[0, u"°C"]}
 
 	def getMainValue(self):
-		"""Feuchte in relativen Prozent zur Temperatur"""
-		val = self.getAllValuesAsDictionary()['Feuchte']
+		"""Temperatur in Grad Celsius"""
+		val = self.getAllValuesAsDictionary()['Temperatur']
 		return val
 
 	def getValue(self, bezeichner):

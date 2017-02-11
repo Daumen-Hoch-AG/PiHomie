@@ -58,27 +58,27 @@ class Logger(object):
 		ts = self.getTime() if not ts else self.calcTime(ts)
 		if not self.Options.getboolean('DEV', 'dev'):
 			with open(self.STATUS, 'a') as handle:
-				print >>handle, ts, text
+				print >>handle, "{} {}".format(ts, text)
 		else:
-			print "STATUS |", ts, text
+			print "STATUS | {} {}".format(ts, text)
 
 
 	def error(self, text, ts=False):
 		ts = self.getTime() if not ts else self.calcTime(ts)
 		if not self.Options.getboolean('DEV', 'dev'):
 			with open(self.ERROR, 'a') as handle:
-				print >>handle, ts, text
+				print >>handle, "{} {}".format(ts, text)
 		else:
-			print "ERROR |", ts, text
+			print "ERROR | {} {}".format(ts, text)
 
 
 	def info(self, text, ts=False):
 		ts = self.getTime() if not ts else self.calcTime(ts)
 		if not self.Options.getboolean('DEV', 'dev'):
 			with open(self.INFO, 'a') as handle:
-				print >>handle, ts, text
+				print >>handle, "{} {}".format(ts, text)
 		else:
-			print "INFO| ", ts, text
+			print "INFO | {} {}".format(ts, text)
 
 
 if __name__ == "__main__":

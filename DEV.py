@@ -14,6 +14,7 @@ import modules.services.Schedule as Schedule
 # Modules - Hardware
 import modules.hardware.Generic as Generic
 import modules.hardware.RollerShutter as RollerShutter
+import modules.hardware.Thermometer_GPIO as Thermometer_GPIO
 import modules.hardware.Hygrometer_GPIO as Hygrometer_GPIO
 
 
@@ -38,7 +39,9 @@ print 2*"\n","--- FOR DEV : ---"
 #
 print 'H = Hygrometer_GPIO.Sensor(1,"Fo", SysSrv)'
 H = Hygrometer_GPIO.Sensor(1,"Fo", SysSrv)
-H.getValue('Temperatur')
+print 'T = Hygrometer_GPIO.Sensor(1,"Fo", SysSrv)'
+T = Thermometer_GPIO.Sensor(2,"Ba", SysSrv)
+
 #print 'G = Generic.Actor(1,"Fo",SysSrv)'
 #GA = Generic.Actor(1,"Foo",SysSrv)
 #print 'RS = RollerShutter.Sensor(2, "Bar", SysSrv)'
@@ -51,8 +54,11 @@ if __name__ == '__main__':
 	print 2*"\n"
 	# from DEV import *
 	print "Zum Testen und importieren in eine interaktive Python-Shell\n"
-	print 'H = Hygrometer_GPIO.Sensor(1,"Fo", SysSrv)'
-	H = Hygrometer_GPIO.Sensor(1,"Fo", SysSrv)
+
+	print "H.getValue"
+	print H.getValue('Temperatur')
+	print "T.getValue"
+	print T.getValue('Temperatur')
 	#GA = Generic.Actor(1,"Foo",SysSrv)
 	#RS = RollerShutter.Actor(2, "Bar", SysSrv)
 	
