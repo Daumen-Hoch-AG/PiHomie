@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import RollerShutter
+from requests import post
+from requests.auth import HTTPBasicAuth
 
 #=========> Allgemeine Klassen <=================================#
 
@@ -11,21 +13,37 @@ class GenericActor(RollerShutter.Actor):
 	"""Generic Aktor: ZWAVE RollerShutter"""
 	def __init__(self, id, nickname, ServiceObject, description=""):
 		super(RollerShutter.Actor, self).__init__(id, nickname, ServiceObject, description="")
-		# Diese Informationen holen:
-		self.deviceId = 0 
+		self.creds = ServiceObject['Creds'].getCred('Zwave')
+		# Diese Informationen asu DB holen:
+		self.deviceId = 3
 		self.instanceId = 0
 		# --------------------------
 
 	def setParam(self, bezeichner, wert):
-		if bezeichner == "isUp" or bezeichner == "isDown":
-			# commandClasses 37
-			print " FAKE: http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[37].Set({})".format(self.deviceId, instanceId, wert)
-		else if bezeichner == "Position":
-			# commandClasses 38
-			print " FAKE: http://temppi:8083/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[38].Set({})".format(self.deviceId, instanceId, wert)
+		if bezeichner == "isUp" and wert:
+			# -- commandClasses 37
+			url = 'http://{}/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[37].Set(255)'.format(self.creds['url'], self.deviceId, self.instanceId)
+		elif bezeichner == "isDown" and wert:
+			# -- commandClasses 37
+			url = 'http://{}/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[37].Set(0)'.format(self.creds['url'], self.deviceId, self.instanceId)
+		elif bezeichner == "Position":
+			# -- commandClasses 38
+			url = 'http://{}/ZWave.zway/Run/devices[{}].instances[{}].commandClasses[37].Set({})'.format(self.creds['url'], self.deviceId, self.instanceId, wert)
 		else:
-			self.log.error("Parameter '{}' ist so nicht änderbar")
+			self.log.error("Parameter '{}' ist so nicht änderbar".format(bezeichner))
+			return False
+		# Execute
+		result = post(url, auth=HTTPBasicAuth(self.creds['username'], self.creds['password']))
+		if result.status_code == 200:
+			self.log.status("Wert {}={} für Device {} (Instance {}) gesetzt.".format(bezeichner, wert, self.deviceId, self.instanceId))
+			return True
+		else:
+			self.log.error("Fehler beim setzen des Werts {}={} für Device {} (Instance {}) - Die Anfrage gab den Code {} zurück!".format(bezeichner, wert, self.deviceId, self.instanceId, result.status_code))
+			return False
 
+#	Ggf. ist bei Zwave eine Methode besser, der in einem Request meherere Werte setzt...
+#	def setAllValuesAsDictionary(self, valDict):
+#		pass
 
 
 
@@ -72,17 +90,27 @@ class Fibaro_FGRM_222_Actor(GenericSensor):
 if __name__ == "__main__":
 	print "Direct access not allowed..."
 
-
-
 #=========> Notizen <================================================#
 
-#z.B. "Küche 1"
-
+# ZWave Device API (direkter Zugriff ins ZWAVE Netz)
+#
+# Für jede Funktionsweise eines Gerätes wird eine eigene Instanz angelegt mit fortlaufender ID.
+# Gibt es nur eine Instanz ist die ID=0 und die Angabe davon kann weggelassen werden.
+# Alle Variablen/Commands einer Instanz befinden sich dann in den verscheidenen 'commandClasses'.
+# Management Funktionen sind davon losgelöst im Objekt 'controller' oder dem Toplevel 'z-way'.
+#
+# Für jedes Command entweder Credentials übermitteln oder ein Cookie bekommen.
+# 1. : curl -v -g -u USER:PW http://....
+#
+# Daten: http://yourip:8083/ZWaveAPI/Data/*
+# Setten: http://yourip:8083/ZWaveAPI/Run/devices[x].instances[y].commandClasses[z].*
+#
+# z.B. "Küche 1"
 # === Switch ===
-## Down
-# http://temppi:8083/ZWave.zway/Run/devices[3].instances[0].commandClasses[37].Set(0)
-## Up
+## Up & Down
 # http://temppi:8083/ZWave.zway/Run/devices[3].instances[0].commandClasses[37].Set(255)
+# http://temppi:8083/ZWave.zway/Run/devices[3].instances[0].commandClasses[37].Set(0)
+
 ## Status Update
 # http://temppi:8083/ZWave.zway/Run/devices[3].instances[0].commandClasses[37].Get()
 
