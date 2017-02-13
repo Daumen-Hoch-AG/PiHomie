@@ -3,7 +3,7 @@
 
 # Modules for main
 import os
-import ConfigParser
+#import ConfigParser
 
 
 # Modules - Services
@@ -19,24 +19,8 @@ import modules.hardware.Thermometer_GPIO as Thermometer_GPIO
 import modules.hardware.Hygrometer_GPIO as Hygrometer_GPIO
 
 
-
-print "[ Starte Systemservices ]"
-SysSrv = dict()
-
-print "-> Options..."
-confFile = os.path.join(os.path.dirname(os.path.realpath('__file__')), 'conf', 'core.cfg'),
-SysSrv['Opt'] = ConfigParser.ConfigParser()
-SysSrv['Opt'].read(confFile)
-
-
-print "-> Logging..."
-SysSrv['Logger'] = Systemservices.Logger(SysSrv)
-
-print "-> Credentials..."
-SysSrv['Creds'] = Systemservices.Credentials(SysSrv, ConfigParser)
-
-
-print "[- FINISH -]"
+# Systemobjekt initialisieren
+SysSrv = Systemservices.PiHomieObject()
 
 
 #print 2*"\n","--- FOR DEV : ---"
@@ -47,10 +31,10 @@ print "[- FINISH -]"
 #T = Thermometer_GPIO.Sensor(2,"Ba", SysSrv)
 
 #print 'G = Generic.Actor(1,"Fo",SysSrv)'
-#GA = Generic.Actor(1,"Foo",SysSrv)
+GA = Generic.Actor(1,"Foo",SysSrv)
 #print 'RS = RollerShutter.Sensor(2, "Bar", SysSrv)'
 #RS = RollerShutter.Sensor(2, "Bar", SysSrv)
-RS = RollerShutter_ZWAVE.GenericActor(2, "Bar", SysSrv)
+#RS = RollerShutter_ZWAVE.GenericActor(2, "Bar", SysSrv)
 #
 #print "[ - FINISHED - ]"
 
@@ -65,5 +49,5 @@ if __name__ == '__main__':
 	#print "T.getValue"
 	#print T.getValue('Temperatur')
 	##GA = Generic.Actor(1,"Foo",SysSrv)
-	RS = RollerShutter_ZWAVE.GenericActor(2, "Bar", SysSrv)
+	#RS = RollerShutter_ZWAVE.GenericActor(2, "Bar", SysSrv)
 	

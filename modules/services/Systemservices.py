@@ -3,24 +3,58 @@
 
 import os
 import datetime
+import ConfigParser
 
 
-# core classes
+# Object Core #
 
-class Logger(object):
-	"""Protokollierungsobjekt für Meldungen aller Art"""
-	def __init__(self, ServiceObject):
-		# Read systemconfig
-		self.Options = ServiceObject['Opt']
+class PiHomieObject(object):
+	"""Objekt mit allen Standardmethoden, das für alle anderen Arten von Instanzen verfügbar sein soll"""
+	def __init__(self):
+		print "Initiere Systemservices..."
+		# Core-Options
+		print "-> Core-Options..."
+		confFile = os.path.join(os.path.dirname(os.path.realpath('__file__')), 'conf', 'core.conf')
+		# Option händisch setzen, da erst nach der Zeile Options zur verfügung stehen
+		isDEV = True
+		self.opts = Options(confFile, isDEV)
 
-		# Set logfilepaths
-		if self.Options.get('Paths','logDir_abs') == "":
-			logDir = os.path.join(os.path.dirname(os.path.realpath('__file__')), self.Options.get('Paths','logDir_rel'))
+		# Credential-Options
+		print "-> Credentials..."
+		if not self.opts.get('Paths')['creddir_abs']:
+			credDir = os.path.join(os.path.dirname(os.path.realpath('__file__')), self.opts.get('Paths')['creddir_rel'])
 		else:
-			logDir = self.Options.get('Paths','logDir_abs')
-		f_status = self.Options.get('Paths', 'logFileStatus')
-		f_error = self.Options.get('Paths', 'logFileError')
-		f_info = self.Options.get('Paths', 'logFileInfo')
+			credDir = self.opts.get('Paths')['creddir_abs']
+		cFile = self.opts.get('Paths')['credfile']
+		credfile = os.path.join(credDir, cFile)
+		self.cred = Options(credfile, self.opts.getBools('DEV'))
+
+		# Database-Connector#
+		#print "-> Database-Connector..."
+		# - Comming Soon ! -
+		
+		# Logging
+		print "-> Logging..."
+		self.logs = Logger({'Paths':self.opts.get('Paths'), 'DEV':self.opts.getBools('DEV')})
+		
+		# Return
+		print "Systemservices bereit !"
+
+
+# SystemService Methoden (Klassen) #
+
+class Logger(PiHomieObject):
+	"""Protokollierungsobjekt für Meldungen aller Art"""
+	def __init__(self, Opts):
+		self.opts = Opts
+		# Set logfilepaths
+		if self.opts['Paths']['logdir_abs'] == "":
+			logDir = os.path.join(os.path.dirname(os.path.realpath('__file__')), self.opts['Paths']['logdir_rel'])
+		else:
+			logDir = self.opts['Paths']['logdir_abs']
+		f_status = self.opts['Paths']['logfile_status']
+		f_error = self.opts['Paths']['logfile_error']
+		f_info = self.opts['Paths']['logfile_info']
 
 		# Filehandler
 		self.STATUS = os.path.join(logDir, f_status)
@@ -46,17 +80,17 @@ class Logger(object):
 	def getTime(self):
 		# Timestamp erstellen (Using local time !)
 		#return datetime.datetime.utcnow().strftime("[%d/%b/%Y %H:%M:%S %z]")
-		return datetime.datetime.now().strftime(self.Options.get('Paths', 'stampformat'))
+		return datetime.datetime.now().strftime(self.opts['Paths']['stampformat'])
 
 
 	def calcTime(self, unixTime):
 		# UNIX einlesen & Timestamp erstellen
-		return datetime.datetime.fromtimestamp(unixTime).strftime(self.Options.get('Paths', 'stampformat'))
+		return datetime.datetime.fromtimestamp(unixTime).strftime(self.opts['Paths']['stampformat'])
 
 
 	def status(self, text, ts=False):
 		ts = self.getTime() if not ts else self.calcTime(ts)
-		if not self.Options.getboolean('DEV', 'dev'):
+		if not self.opts['DEV']['dev']:
 			with open(self.STATUS, 'a') as handle:
 				print >>handle, "{} {}".format(ts, text)
 		else:
@@ -65,7 +99,7 @@ class Logger(object):
 
 	def error(self, text, ts=False):
 		ts = self.getTime() if not ts else self.calcTime(ts)
-		if not self.Options.getboolean('DEV', 'dev'):
+		if not self.opts['DEV']['dev']:
 			with open(self.ERROR, 'a') as handle:
 				print >>handle, "{} {}".format(ts, text)
 		else:
@@ -74,49 +108,49 @@ class Logger(object):
 
 	def info(self, text, ts=False):
 		ts = self.getTime() if not ts else self.calcTime(ts)
-		if not self.Options.getboolean('DEV', 'dev'):
+		if not self.opts['DEV']['dev']:
 			with open(self.INFO, 'a') as handle:
 				print >>handle, "{} {}".format(ts, text)
 		else:
 			print "INFO | {} {}".format(ts, text)
 
 
-class Credentials(object):
+
+class Options(PiHomieObject):
 	"""Protokollierungsobjekt für Meldungen aller Art"""
-	def __init__(self, ServiceObject, Parser):
-		# Read systemconfig
-		self.Options = ServiceObject['Opt']
-		self.log = ServiceObject['Logger']
-		self.creds = {}
-
-		# Set credfilepaths
-		if self.Options.get('Paths','credDir_abs') == "":
-			credDir = os.path.join(os.path.dirname(os.path.realpath('__file__')), self.Options.get('Paths','credDir_rel'))
-		else:
-			credDir = self.Options.get('Paths','credDir_abs')
-
-		# Creds aus File lesen
-		cFile = self.Options.get('Paths', 'credFile')
-		cFile = os.path.join(credDir, cFile)
+	def __init__(self, confPath, isDEV=False):
 		try:
-			checkFile = open(cFile, 'r')
+			checkFile = open(confPath, 'r')
 		except IOError as e:
-			self.log.error("Keine Berechtigung oder Datei nicht gefunden: {}".format(cFile))
-			self.log.error("Credentials wurde nicht gelesen !")
-			return
+			print "Keine Berechtigung oder Datei nicht gefunden: {}".format(confPath)
+			print "Einstellungen konnten nicht gelesen werden!"
+			raise e
 		else:
 			checkFile.close()
 
-		self.credConfig = Parser.ConfigParser()
-		self.credConfig.read(cFile)
+		self.handle = ConfigParser.ConfigParser()
+		self.handle.read(confPath)
+		print "Einstellungen wurden gelesen aus {}".format(confPath)
 
-	def getCred(self, abschnitt):
-		creds = {}
-		for name, value in self.credConfig.items(abschnitt):
-			creds[name] = value
-		return creds
+		if isDEV:
+			for section in self.handle.sections():
+				for name, value in self.handle.items(section):
+					print name, ":", value
 
-		self.log.info("Credentials wurden gelesen aus {}".format(cFile))
+
+	def get(self, abschnitt):
+		values = {}
+		for name, value in self.handle.items(abschnitt):
+			values[name] = value
+		return values
+
+	def getBools(self, abschnitt):
+		# Nicht string sondern True/False
+		values = {}
+		for name, value in self.handle.items(abschnitt):
+			value = True if not value.lower() in ['n', 'no', 'not', 'nein', 'false', '', ' '] else False
+			values[name] = value
+		return values
 
 
 
