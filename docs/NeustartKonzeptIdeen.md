@@ -17,4 +17,4 @@
 - Ein "frischer"-Knoten antwortet mit einem "requestConfig"-Kommando und bekommt darauf hin alle initialen Daten und Konfigurationen
 
 ##Steuerkommandos an Knoten
-- Während des Betriebs sind Kommandos zum Hinzufügen, Löschen und Ändern von Sensoren und Aktoren vorgesehen.
+- Während des Betriebs sind Kommandos zum Hinzufügen, Löschen und Ändern von Sensoren und Aktoren vorgesehen..
