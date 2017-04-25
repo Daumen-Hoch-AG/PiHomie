@@ -8,7 +8,7 @@
 
 # Systemobjekt initialisieren und in die Namespaces hineinreichen
 import modules.services.Systemservice as Systemservice
-PIHOMIE= Systemservice.PiHomieObject()
+PIHOMIE = Systemservice.PiHomieObject()
 
 
 # Modules - Services
@@ -43,8 +43,8 @@ Hygrometer_GPIO.PIHOMIE = PIHOMIE
 #print 'T = Hygrometer_GPIO.Sensor(1,"Fo", SysSrv)'
 #T = Thermometer_GPIO.Sensor(2,"Ba", SysSrv)
 
-print 'G = Generic.Actor(1,"Fo")'
-G = Generic.Actor(1,"Foo")
+print 'G = Generic.Actor(1, "Fo")'
+G = Generic.Actor(1, "Foo")
 print 'RS = RollerShutter.Sensor(2, "Bar")'
 RS = RollerShutter.Sensor(2, "Bar")
 #RS = RollerShutter_ZWAVE.GenericActor(2, "Bar", SysSrv)
@@ -63,4 +63,3 @@ if __name__ == '__main__':
 	#print T.getValue('Temperatur')
 	##GA = Generic.Actor(1,"Foo",SysSrv)
 	#RS = RollerShutter_ZWAVE.GenericActor(2, "Bar", SysSrv)
-	

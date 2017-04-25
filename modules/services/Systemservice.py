@@ -15,7 +15,7 @@ class PiHomieObject(object):
 		isDEV = True
 		print "Initiere Systemservices..."
 		self.cwd = os.path.dirname(os.path.realpath('__file__'))
-		
+
 		# Core-Options
 		print "-> Core-Options..."
 		confPath = os.path.join(self.cwd, 'conf', 'core.conf')
@@ -32,7 +32,7 @@ class PiHomieObject(object):
 		self.creds = ConfigParser.ConfigParser()
 		self.creds.read(confPath)
 		print "Credentials wurden gelesen aus {}".format(confPath)
-		
+
 		# Logging
 		print "-> Logging..."
 		self.LOGS = {
@@ -46,7 +46,7 @@ class PiHomieObject(object):
 		# Database-Connector#4
 		#print "-> Database-Connector..."
 		# - Comming Soon ! -
-		
+
 		# Return
 		print "Systemservices bereit !"
 
