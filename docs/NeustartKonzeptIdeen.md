@@ -13,7 +13,7 @@
 
 ### Knoten Neustart
 
-- Die Steuerung sendet in einem bestimmten Intervall eine Status-Anfrage an alle Knoten
+- Die Steuerung sendet in einem bestimmten Intervall eine Status-Anfrage an alle Knoten (Heartbeat)
 - Ein "frischer"-Knoten antwortet mit einem "requestConfig"-Kommando und bekommt darauf hin alle initialen Daten und Konfigurationen
 
 ## Steuerkommandos an Knoten
