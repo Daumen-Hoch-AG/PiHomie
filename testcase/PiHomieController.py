@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from bottle import Bottle, PasteServer
+import requests
 
 
 class Controller(Bottle):
@@ -10,13 +11,16 @@ class Controller(Bottle):
 		super(Controller, self).__init__()
 		self.name = name
 		self.route('/', callback=self.hello)
+		self.route('/func', callback=self.hello2)
 
 
 	def hello(self):
-		return """
-	<h1>Bottle is working !</h1>
-	"""
+		r = requests.get("http://localhost:8888/")
+		return r.text
 
+	def hello2(self):
+		r= requests.get("http://localhost:8888/func")
+		return r.text
 
 if __name__ == '__main__':
 	app = Controller("Test")
