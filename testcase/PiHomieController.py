@@ -12,6 +12,7 @@ class Controller(Bottle):
 		self.name = name
 		self.route('/', callback=self.hello)
 		self.route('/func', callback=self.hello2)
+		self.route('/kill', callback=self.kill)
 
 
 	def hello(self):
@@ -19,8 +20,13 @@ class Controller(Bottle):
 		return r.text
 
 	def hello2(self):
-		r= requests.get("http://localhost:8888/func")
+		r = requests.get("http://localhost:8888/func")
 		return r.text
+
+	def kill(self):
+		r = requests.get("http://localhost:8888/kill")
+		return r.text
+
 
 if __name__ == '__main__':
 	app = Controller("Test")
