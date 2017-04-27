@@ -3,14 +3,13 @@
 
 import os
 from bottle import Bottle, BaseRequest, PasteServer, run
-import threading
 
 
 #class Communicator(threading.Thread):
-class Communicator(Bottle):
+class Steuerung(Bottle):
 	"""Test Bottle"""
 	def __init__(self, port=8100):
-		super(Communicator, self).__init__()
+		super(Steuerung, self).__init__()
 		self.port = port
 		
 		# Global Variables
