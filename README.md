@@ -35,7 +35,7 @@ Obwohl ein Fokus auf sichere Übetragungen und Absicherung des Systems gelegt wi
 
 Erforderliche Pakete:
 
-	pip install spidev
+	pip install requests bottle paste spidev
 
 ### 2. Geräte einbinden/anlernen
 ### 3. Grundeinstellungen
