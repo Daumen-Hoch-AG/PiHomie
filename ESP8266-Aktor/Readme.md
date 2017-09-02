@@ -13,14 +13,13 @@ Zuerst wird der Flash Speicher des ESP geleert. Der Device-Name (hier ttyUSB0 mu
 	esptool.py --port /dev/ttyUSB0 erase_flash
     
 ## Neue Firmware aufspielen
-
 Die MicroPython Firmware kann unter http://micropython.org/download#esp8266 heruntergeladen werden.
 
 Diese wird dann installiert.
 
 	esptool.py --port /dev/ttyUSB0 --baud 460800 write_flash --flash_size=detect 0 esp8266-20170108-vX.X.X.bin
 
-##Aufruf der MicroPython Konsole
+## Aufruf der MicroPython Konsole
 Nach einem Neustart kann die Konsole aufgerufen werden, auf einem Mac geht dies mit:
 
 	screen /dev/ttyUSB0 115200
@@ -31,8 +30,8 @@ Hier kann dann mit
     
 das Passwort für die Remote Konsole über WLAN gesetzt werden.
 
-##Verbinden mit der Konsole über WLAN
-Das Wlan hat den Namen MicroPython-XXXXXX, das Standard-Passwort ist "micropythoN". 
+## Verbinden mit der Konsole über WLAN
+Das Wlan hat den Namen MicroPython-XXXXXX, das Standard-Passwort ist "micropythoN".
 
 Über die Webseite http://micropython.org/webrepl/ kann die Konsole aufgerufen werden und Dateien hoch- bzw. runtergeladne werden. Die Datei boot.py wurde wie folgt angepasst, damit sich der Aktor mit dem Heim-WLAN verbindet.
 
