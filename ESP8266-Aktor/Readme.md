@@ -8,7 +8,9 @@ Für das beschreiben des Flash Speichers wird das Programm esptool verwendet.
 	pip install esptool
     
 ## Löschen des Flash Speichers
-Zuerst wird der Flash Speicher des ESP geleert. Der Device-Name (hier ttyUSB0 muss je nach Gerät angepasst werden.)
+Zuerst wird der Flash Speicher des ESP geleert, hierzu muss der ESP8266 im Bootloader Modus gestartet werden.
+
+Der Device-Name (hier ttyUSB0 muss je nach Gerät angepasst werden.)
 
 	esptool.py --port /dev/ttyUSB0 erase_flash
     
