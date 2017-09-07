@@ -14,6 +14,8 @@ Der Device-Name (hier ttyUSB0 muss je nach Gerät angepasst werden.)
 
 	esptool.py --port /dev/ttyUSB0 erase_flash
     
+Im Anschluss den ESP vom Strom trennen und erneut im Bootloader Modus starten.
+
 ## Neue Firmware aufspielen
 Die MicroPython Firmware kann unter http://micropython.org/download#esp8266 heruntergeladen werden.
 
@@ -22,7 +24,7 @@ Diese wird dann installiert.
 	esptool.py --port /dev/ttyUSB0 --baud 460800 write_flash --flash_size=detect 0 esp8266-20170108-vX.X.X.bin
 
 ## Aufruf der MicroPython Konsole
-Nach einem Neustart kann die Konsole aufgerufen werden, auf einem Mac geht dies mit:
+Vor dem notwendigen Neustart sollte das Modul über eine eigene Stromversorgung angeschlossen werden. Dann kann die Konsole aufgerufen werden, auf einem Mac und Linux geht dies mit:
 
 	screen /dev/ttyUSB0 115200
     
@@ -30,7 +32,7 @@ Hier kann dann mit
 
 	import webrepl_setup
     
-das Passwort für die Remote Konsole über WLAN gesetzt werden.
+die Remotekonsole beim Booten aktiviert werden und das Passwort gesetzt werden.
 
 ## Verbinden mit der Konsole über WLAN
 Das Wlan hat den Namen MicroPython-XXXXXX, das Standard-Passwort ist "micropythoN".
