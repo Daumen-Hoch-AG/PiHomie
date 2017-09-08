@@ -61,4 +61,4 @@ Die Datei boot.py wurde wie folgt angepasst, damit sich der Aktor mit dem Heim-W
     webrepl.start()
     gc.collect()
     
-Nach einem Reboot sollte sich der Aktor mit dem WLAN verbunden haben und über eine per DHCP zugewiesene IP zu erreichen sein.
+Nach einem Reboot sollte sich der Aktor mit dem WLAN verbunden haben und über eine per DHCP zugewiesene IP (WebREPL unter dem Standardport 8266) zu erreichen sein.
