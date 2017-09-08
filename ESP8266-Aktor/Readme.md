@@ -35,9 +35,10 @@ Hier kann dann mit
 die Remotekonsole beim Booten aktiviert werden und das Passwort gesetzt werden.
 
 ## Verbinden mit der Konsole über WLAN
-Das Wlan hat den Namen MicroPython-XXXXXX, das Standard-Passwort ist "micropythoN".
+Über die Webseite http://micropython.org/webrepl/ kann die Konsole aufgerufen werden und Dateien hoch- bzw. runtergeladne werden.
+Nachdem die Konsole im Browser aufgerufen wurde, kann sich jetzt mit dem WLAN des Aktors verbunden werden. Es hat den Namen MicroPython-XXXXXX, das Standard-Passwort ist "micropythoN".
 
-Über die Webseite http://micropython.org/webrepl/ kann die Konsole aufgerufen werden und Dateien hoch- bzw. runtergeladne werden. Die Datei boot.py wurde wie folgt angepasst, damit sich der Aktor mit dem Heim-WLAN verbindet.
+Die Datei boot.py wurde wie folgt angepasst, damit sich der Aktor mit dem Heim-WLAN verbindet.
 
     # This file is executed on every boot (including wake-boot from deepsleep)
     #import esp
