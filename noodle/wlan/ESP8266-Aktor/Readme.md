@@ -28,6 +28,8 @@ Vor dem notwendigen Neustart sollte das Modul über eine eigene Stromversorgung 
 
 	screen /dev/ttyUSB0 115200
     
+Unter Windows z.B. mit dem Tool PuTTY und den hier beschriebenen Einstellungen (mit 115200 Baud): https://warpproject.org/trac/wiki/howto/USB_UART
+
 Hier kann dann mit
 
 	import webrepl_setup
