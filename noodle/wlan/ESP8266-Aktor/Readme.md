@@ -40,27 +40,10 @@ die Remotekonsole beim Booten aktiviert werden und das Passwort gesetzt werden.
 Über die Webseite http://micropython.org/webrepl/ kann die Konsole aufgerufen werden und Dateien hoch- bzw. runtergeladne werden.
 Nachdem die Konsole im Browser aufgerufen wurde, kann sich jetzt mit dem WLAN des Aktors verbunden werden. Es hat den Namen MicroPython-XXXXXX, das Standard-Passwort ist "micropythoN".
 
-Die Datei boot.py wurde wie folgt angepasst, damit sich der Aktor mit dem Heim-WLAN verbindet.
+Die Datei `boot.py` muss noch wie folgt für das eigene Heimnetzwerk angepasst werden, damit sich das Gerät verbinden kann.
 
-    # This file is executed on every boot (including wake-boot from deepsleep)
-    #import esp
-    #esp.osdebug(None)
-    import gc
-    import webrepl
+    sta_if.connect('<ssid>', '<password>')
 
-    def do_connect():
-        import network
-        sta_if = network.WLAN(network.STA_IF)
-        if not sta_if.isconnected():
-            print('connecting to network...')
-            sta_if.active(True)
-            sta_if.connect('<ssid>', '<password>')
-            while not sta_if.isconnected():
-                pass
-        print('network config:', sta_if.ifconfig())
+Auch die restlichen Dateien in diesem Verzeichnis müssen über die Remotekonsole übertragen werden.
 
-    do_connect()
-    webrepl.start()
-    gc.collect()
-    
 Nach einem Reboot sollte sich der Aktor mit dem WLAN verbunden haben und über eine per DHCP zugewiesene IP (WebREPL unter dem Standardport 8266) zu erreichen sein.

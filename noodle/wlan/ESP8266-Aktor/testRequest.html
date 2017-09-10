@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Test Request für ESP 8266</title>
+</head>
+<body>
+
+	<h2>Klicke auf einen Button, um den Request auszuführen</h2>
+
+	<form action="http://192.168.178.26:8080" method="POST">
+	<div>
+		<label>Action auswählen
+			<select name="action">
+				<option>pair</option>
+				<option>unpair</option>
+				<option>roll</option>
+				<option>None</option>
+			</select>
+		</label>
+	</div>
+	<div>
+		<label>Wert für den rolladen
+			<input type="text" name="direction" placeholder="Richtung (-1 / 1)">
+			<input type="number" name="duration" placeholder="Dauer (0 - X Sekunden)">
+		</label>
+	</div>
+	<div>
+		<label>Neue ID (für Pairing)
+			<input type="text" name="newid">
+		</label>
+	</div>
+	<div>
+		<label>Diesen Text per POST schicken:
+			<input type="submit" name="abschicken1">
+		</label>
+	</div>
+	</form>
+
+</body>
+</html>
