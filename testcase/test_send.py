@@ -6,13 +6,15 @@ import hashlib
 import time
 from binascii import hexlify
 
-SALT = ""
+SALT = "0"
 toSend = ""
 params = b"%%%192.168.178.X%%%1"
 
 def hashToSend():
 	global toSend
-	toSend = hashlib.sha256(str.encode("pair"+SALT)).digest()
+	#toSend = hashlib.sha256(str.encode(action_names[act]+SALT)).digest()
+	#toSend = hexlify(toSend).decode()
+	toSend = hashlib.sha256(str.encode("rollstatus"+SALT)).digest()
 	toSend = hexlify(toSend)+params
 	print(toSend)
 
@@ -28,7 +30,7 @@ def main():
 	print("Sending:")
 	print(toSend)
 	s.send(toSend)
-	time.sleep(10)
+	time.sleep(5)
 	return
 
 

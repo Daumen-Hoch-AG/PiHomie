@@ -35,13 +35,15 @@ except IOError:
 	ID = 0
 	SALT = str(ID)
 	SEP = b"%%%"
+
+print("> Config:", "PAIR ID SALT SEP")
 print(PAIR, ID, SALT, SEP)
 
 
 
 class Listener:
 	def __init__(self, ip="0.0.0.0", port=8080):
-		# Settings
+		# von der Klasse editierbare Settings
 		self.PAIR = PAIR
 		self.ID = ID
 		self.actions = {}
@@ -60,14 +62,16 @@ class Listener:
 		self.errors = []
 
 		# Security: Link Funktionen zu Hash
+		print("\n> Hashes:")
 		action_names = ["pair", "unpair", "roll", "rollstatus"]
 		action_funcs = [self.pair, self.unpair, self.roll, self.rollstatus]
 		for act in range(len(action_names)):
 			newKey = hashlib.sha256(str.encode(action_names[act]+SALT)).digest()
 			newKey = hexlify(newKey).decode()
 			self.actions[newKey] = action_funcs[act]
+			print(newKey, "\t", action_names[act])
 
-		print("-- ESP bereit und listening --")
+		print("\n-- ESP bereit und listening --")
 
 
 	def run(self):
@@ -79,22 +83,29 @@ class Listener:
 			for sock in readable:
 				if sock is self.server:
 					# neue eingehende Verbindung
-					self.accept_new_connection()
+					r = self.accept_new_connection()
+					if r:
+						print("Client", r[0], ":", r[1], "connected")
 				else:
 					# bestehende Verbindun sendet
-					data = sock.recv(1024)
-					if data:
-						# Input bearbeiten / Request in Aktion umwandeln
-						print("...processing...")
-						req = data.split(SEP)
-						req = list(map(lambda x: x.strip().decode(), req))
-						try:
-							self.actions[req[0]](sock, req[1:])
-						except Exception as e:
-							print(e)
-							sock.send(b"keine action\n")
-					else:
+					try:
+						# versuche zu Empfangen
+						data = sock.recv(1024)
+						if data:
+							# Input parsen
+							print("...processing...")
+							try:
+								req = data.split(SEP)
+								req = list(map(lambda x: x.strip().decode(), req))
+								self.actions[req[0]](sock, req[1:])
+							except Exception as e:
+								print(e.__class__.__name__, ":", e)
+								sock.send(b"keine action\n")
+						else:
+							raise ConnectionError
+					except Exception as e:
 						# Hier kommt nichts mehr, Verbindung schließen
+						print("Connection closed:", sock)
 						sock.close()
 						self.inputs.remove(sock)
 
@@ -162,7 +173,7 @@ class Listener:
 		return
 
 
-	def rollstatus(self, cx):
+	def rollstatus(self, cx, data):
 		"""Position des Rolladens wiedergeben"""
 		cx.send(b"Der Rolladen steht gereade irgendwo...")
 		return

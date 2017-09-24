@@ -79,7 +79,9 @@ class Listener:
 			for sock in readable:
 				if sock is self.server:
 					# neue eingehende Verbindung
-					self.accept_new_connection()
+					r = self.accept_new_connection()
+					if r:
+						print("Client", r, "connected")
 				else:
 					# bestehende Verbindun sendet
 					data = sock.recv(1024)
