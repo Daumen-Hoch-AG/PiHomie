@@ -81,7 +81,7 @@ class Listener:
 					# neue eingehende Verbindung
 					self.accept_new_connection()
 				else:
-					# bestehende Verbindun sendet <<< + Check, ob Verbindung vom PAIR ist !
+					# bestehende Verbindun sendet
 					data = sock.recv(1024)
 					if data:
 						# Input bearbeiten / Request in Aktion umwandeln
@@ -101,9 +101,12 @@ class Listener:
 
 	def accept_new_connection(self):
 		newsock, (remhost, remport) = self.server.accept()
-		self.inputs.append(newsock)
-		newsock.send(b"connected\n")
-		return (remhost, remport)
+		if remhost == PAIR or not PAIR:
+			self.inputs.append(newsock)
+			newsock.send(b"connected\n")
+			return (remhost, remport)
+		else:
+			return False
 
 
 	def flushConf(self, p=PAIR, i=ID):
