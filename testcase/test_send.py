@@ -8,13 +8,13 @@ from binascii import hexlify
 
 SALT = "0"
 toSend = ""
+comm = "rollstatus"
 params = b"%%%192.168.178.X%%%1"
+dlay = 5
 
 def hashToSend():
 	global toSend
-	#toSend = hashlib.sha256(str.encode(action_names[act]+SALT)).digest()
-	#toSend = hexlify(toSend).decode()
-	toSend = hashlib.sha256(str.encode("rollstatus"+SALT)).digest()
+	toSend = hashlib.sha256(str.encode(comm+SALT)).digest()
 	toSend = hexlify(toSend)+params
 	print(toSend)
 
@@ -24,13 +24,17 @@ def main():
 	try:
 		s.connect(host)
 	except Exception:
-		print("Unable to connect ! - ABORT")
+		print("Unable to connect to {}:{} - ABORT".format(host[0], host[1]))
 		return
-	print("Connected to {} : {}".format(host[0], host[1]))
-	print("Sending:")
+	print("--- Connected to {} : {}".format(host[0], host[1]))
+	print("Sending: {} - {}".format(comm, params))
 	print(toSend)
 	s.send(toSend)
-	time.sleep(5)
+	print("Wait {}s".format(dlay))
+	time.sleep(dlay)
+	print("--- Disconnecting")
+	s.shutdown(1)
+	s.close()
 	return
 
 

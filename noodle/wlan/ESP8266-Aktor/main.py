@@ -28,8 +28,8 @@ try:
 			SALT = c.readline().strip()
 			SEP = c.readline().strip().encode()
 		else:
-			raise IOError
-except IOError:
+			raise OSError
+except OSError:
 	print("Keine Config oder Pairing vorhanden (Default)")
 	PAIR = False
 	ID = 0
@@ -102,7 +102,7 @@ class Listener:
 								print(e.__class__.__name__, ":", e)
 								sock.send(b"keine action\n")
 						else:
-							raise ConnectionError
+							raise Exception
 					except Exception as e:
 						# Hier kommt nichts mehr, Verbindung schließen
 						print("Connection closed:", sock)
@@ -136,7 +136,7 @@ class Listener:
 
 	def pair(self, cx, data):
 		"""Aktor an eine Node binden (persistent)"""
-		print("pairing", data)
+		print("-pairing", data)
 		cx.send(b"pairing\n")
 		newPair, newID = data
 		if len(data) < 2:
@@ -147,13 +147,14 @@ class Listener:
 			self.PAIR = newPair
 			self.ID = newID
 			self.flushConf()
-			print("successfully paired to", newPair, "ID:", newID)
-			cx.send(b"successfully paired to "+str.encode(newPair)+b" ID: "+str.encode(newID)+b"\n")
+			print("erfolgreich gepaired zu", newPair, "ID:", newID)
+			cx.send(b"erfolgreich gepaired zu "+str.encode(newPair)+b" ID: "+str.encode(newID)+b"\n")
 		return
 
 
 	def unpair(self, cx):
 		"""Temporäres Lösen des Pairings für X Sekunden"""
+		print("-unpair")
 		with open(CONFIG_FILE, "w+") as c:
 			c.write("")
 		# Mit leerer Config auf Stromtrennung warten
@@ -163,18 +164,21 @@ class Listener:
 		#sleep(30)
 		sleep(5)
 		self.flushConf()
+		print("-abbruch")
 		return
 
 	
 	def roll(self, cx, data):
-		direction, duration = data[1:3]
 		"""Rolladen in eine Richtung bewegen"""
+		direction, duration = data[1:3]
+		print("-rollen nach", direction, "fuer", duration)
 		cx.send(b"Rolle nach "+str.encode(direction)+b" fuer "+str.encode(duration)+b" Sekunden")
 		return
 
 
 	def rollstatus(self, cx, data):
 		"""Position des Rolladens wiedergeben"""
+		print("-rollstatus")
 		cx.send(b"Der Rolladen steht gereade irgendwo...")
 		return
 
