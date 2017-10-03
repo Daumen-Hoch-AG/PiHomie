@@ -8,8 +8,8 @@ from binascii import hexlify
 
 SALT = "0"
 toSend = ""
-comm = "rollstatus"
-params = b"%%%192.168.178.X%%%1"
+comm = "roll"
+params = b"%%%up%%%15"
 dlay = 5
 
 def hashToSend():

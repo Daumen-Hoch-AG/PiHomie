@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-	
 
 try:
+	import sys
 	import uhashlib as hashlib
 	import ubinascii
 	from ubinascii import hexlify
@@ -9,6 +10,7 @@ try:
 	import uselect as select
 	import utime as time
 except ImportError:
+	import sys
 	import hashlib
 	import binascii
 	from binascii import hexlify
@@ -24,7 +26,7 @@ try:
 		print("Lade persistent Config")
 		PAIR = c.readline().strip()
 		if PAIR != "" and PAIR != "DEFAULTS":
-			ID = c.readline().strip()
+			ID = int(c.readline().strip())
 			SALT = c.readline().strip()
 			SEP = c.readline().strip().encode()
 		else:
@@ -47,6 +49,10 @@ class Listener:
 		self.PAIR = PAIR
 		self.ID = ID
 		self.actions = {}
+		# Flags
+		self.timer = 0
+		#self.isMoving = False
+		#self.moveListener = 0
 
 		# Create Socket
 		addr = socket.getaddrinfo(ip, port)[0][-1]
@@ -75,7 +81,7 @@ class Listener:
 
 
 	def run(self):
-		while self.inputs:
+		while True:
 			# Warten bis eine Liste aktiv wird
 			print("...waiting...")
 			readable, writable, exceptional = select.select(self.inputs, self.outputs, self.errors)
@@ -86,8 +92,9 @@ class Listener:
 					r = self.accept_new_connection()
 					if r:
 						print("Client", r[0], ":", r[1], "connected")
+
 				else:
-					# bestehende Verbindun sendet
+					# bestehende Verbindung sendet
 					try:
 						# versuche zu Empfangen
 						data = sock.recv(1024)
@@ -97,10 +104,11 @@ class Listener:
 							try:
 								req = data.split(SEP)
 								req = list(map(lambda x: x.strip().decode(), req))
-								self.actions[req[0]](sock, req[1:])
+								msg = self.actions[req[0]](sock, req[1:])
 							except Exception as e:
 								print(e.__class__.__name__, ":", e)
-								sock.send(b"keine action\n")
+								msg = b"keine action\n"
+							sock.send(msg)
 						else:
 							raise Exception
 					except Exception as e:
@@ -108,6 +116,21 @@ class Listener:
 						print("Connection closed:", sock)
 						sock.close()
 						self.inputs.remove(sock)
+
+			# Outputs / Flags
+			for timer in writable:
+				if type(timer) == int and self.timer > 0:
+					# Action Listener
+					if self.timer-1 > 0:
+						# weitere Sekunde laufen lassen
+						time.sleep(1)
+						self.timer -= 1
+						print("Moving...", self.timer, "left")
+					else:
+						# Action beenden
+						print("Stopping...")
+						self.stop(timer)
+
 
 
 	def accept_new_connection(self):
@@ -170,17 +193,32 @@ class Listener:
 	
 	def roll(self, cx, data):
 		"""Rolladen in eine Richtung bewegen"""
-		direction, duration = data[1:3]
-		print("-rollen nach", direction, "fuer", duration)
-		cx.send(b"Rolle nach "+str.encode(direction)+b" fuer "+str.encode(duration)+b" Sekunden")
+		try:
+			direction, duration = data[0:2]
+			# <Rollen triggern/schalten>
+			#self.isMoving = True
+			#self.moveListener = sys.stdout
+			self.timer = int(duration)
+			self.outputs = [0]
+			print("-rollen nach", direction, "fuer", duration)
+			print("Is Moving...")
+			return b"Rolle nach "+str.encode(direction)+b" fuer "+str.encode(duration)+b" Sekunden"
+		except Exception:
+			return b"falsche Argumente"
+
+
+	def stop(self, timer):
+		"""Stoppt Bewegung und resettet Timer"""
+		# <Stoppen triggern/schalten>
+		self.timer = 0
+		self.outputs.remove(timer)
 		return
 
 
 	def rollstatus(self, cx, data):
 		"""Position des Rolladens wiedergeben"""
 		print("-rollstatus")
-		cx.send(b"Der Rolladen steht gereade irgendwo...")
-		return
+		return b"Der Rolladen steht gereade irgendwo..."
 
 
 if __name__ == '__main__':
