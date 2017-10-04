@@ -46,6 +46,7 @@ class Listener:
 		# von der Klasse editierbare Settings
 		self.PAIR = PAIR
 		self.ID = ID
+		self.SALT = SALT
 		self.actions = {}
 		# Flags
 		self.timer = 0 # (< statt int besser date.time verwenden)
@@ -66,14 +67,7 @@ class Listener:
 		self.errors = []
 
 		# Security: Link Funktionen zu Hash
-		print("\n> Hashes:")
-		self.action_names = ["pair", "unpair", "roll", "rollstatus"]
-		action_funcs = [self.pair, self.unpair, self.roll, self.rollstatus]
-		for act in range(len(self.action_names)):
-			newKey = hashlib.sha256(str.encode(self.action_names[act]+SALT)).digest()
-			newKey = hexlify(newKey).decode()
-			self.actions[newKey] = action_funcs[act]
-			print(newKey, "\t", self.action_names[act])
+		self.generateHashes()
 
 		print("\n-- ESP bereit und listening --")
 
@@ -116,7 +110,7 @@ class Listener:
 							sock.send(msg)
 						else:
 							raise Exception
-					except Exception as e:
+					except Exception:
 						# Hier kommt nichts mehr, Verbindung schließen
 						print("Connection closed:", sock)
 						sock.close()
@@ -136,6 +130,17 @@ class Listener:
 						print("Stopping...")
 						self.stopAction(timer)
 
+
+	def generateHashes(self):
+		print("\n> Hashes:")
+		self.action_names = ["pair", "unpair", "roll", "rollstatus"]
+		action_funcs = [self.pair, self.unpair, self.roll, self.rollstatus]
+		self.actions = {}
+		for act in range(len(self.action_names)):
+			newKey = hashlib.sha256(str.encode(self.action_names[act]+self.SALT)).digest()
+			newKey = hexlify(newKey).decode()
+			self.actions[newKey] = action_funcs[act]
+			print(newKey, "\t", self.action_names[act])
 
 
 	def accept_new_connection(self):
@@ -158,10 +163,11 @@ class Listener:
 				c.write("\n")
 				c.write(self.ID)
 				c.write("\n")
-				c.write(SALT)
+				c.write(self.SALT)
 				c.write("\n")
 				c.write(SEP.decode())
 				c.write("\n")
+		self.generateHashes()
 
 
 	def stopAction(self, timer):
@@ -182,16 +188,17 @@ class Listener:
 	def pair(self, data):
 		"""Aktor an eine Node binden (persistent)"""
 		print("-pairing", data)
-		newPair, newID = data
-		if len(data) < 2:
-			print("zu wenig Argumente !")
-			return b"zu wenig Argumente !\n"
-		else:
+		try:
+			newPair, newID = data[0:2]
 			self.PAIR = newPair
 			self.ID = newID
+			self.SALT = newID
 			self.flushConf()
 			print("erfolgreich gepaired zu", newPair, "ID:", newID)
 			return b"erfolgreich gepaired zu "+str.encode(newPair)+b" ID: "+str.encode(newID)+b"\n"
+		except Exception:
+			print("falsche Angabe von Argumenten")
+			return b"falsche Angabe von Argumenten\n"
 
 
 	def unpair(self, data):
@@ -208,7 +215,7 @@ class Listener:
 		# statt Stromtrennung
 		self.timer = 30
 		self.outputs = [self.action_names.index('unpair')]
-		return b"Warte 30 Seks mit leerer Config...."
+		return b"Warte 30 Seks mit leerer Config....\n"
 
 
 	def roll(self, data):
@@ -219,15 +226,16 @@ class Listener:
 			self.timer = int(duration)
 			self.outputs = [self.action_names.index('roll')]
 			print("-rollen nach", direction, "fuer", duration)
-			return b"Rolle nach "+str.encode(direction)+b" fuer "+str.encode(duration)+b" Sekunden"
+			return b"Rolle nach "+str.encode(direction)+b" fuer "+str.encode(duration)+b" Sekunden\n"
 		except Exception:
-			return b"falsche Argumente"
+			print("falsche Angabe von Argumenten")
+			return b"falsche Angabe von Argumenten\n"
 
 
 	def rollstatus(self, data):
 		"""Position des Rolladens wiedergeben"""
 		print("-rollstatus")
-		return b"Der Rolladen steht gereade irgendwo..."
+		return b"Der Rolladen steht gereade irgendwo...\n"
 
 
 if __name__ == '__main__':

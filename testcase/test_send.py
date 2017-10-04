@@ -8,7 +8,7 @@ from binascii import hexlify
 
 SALT = "0"
 toSend = ""
-comm = "unpair"
+comm = "rollstatus"
 params = b""
 dlay = 5
 
@@ -19,7 +19,7 @@ def hashToSend():
 	print(toSend)
 
 def main():
-	host = ("localhost", 8080)
+	host = ("192.168.178.26", 8080)
 	s = socket.socket()
 	try:
 		s.connect(host)
