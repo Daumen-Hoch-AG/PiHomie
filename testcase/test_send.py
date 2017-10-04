@@ -6,10 +6,11 @@ import hashlib
 import time
 from binascii import hexlify
 
+addr = "localhost"
 SALT = "0"
 toSend = ""
-comm = "rollstatus"
-params = b""
+comm = "roll"
+params = b"%%%up%%%15"
 dlay = 5
 
 def hashToSend():
@@ -19,7 +20,7 @@ def hashToSend():
 	print(toSend)
 
 def main():
-	host = ("192.168.178.26", 8080)
+	host = (addr, 8080)
 	s = socket.socket()
 	try:
 		s.connect(host)

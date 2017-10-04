@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-	
 
 try:
@@ -120,11 +120,11 @@ class Listener:
 			for timer in writable:
 				if type(timer) == int and self.timer > 0:
 					# Action Listener
-					if self.timer-1 > 0:
+					toWait = time.time()-self.timer
+					if toWait > 0:
 						# weitere Sekunde laufen lassen
 						time.sleep(1)
-						self.timer -= 1
-						print(self.action_names[timer], self.timer, "Sek. left")
+						print(self.action_names[timer], "noch", toWait, "Sek. von", self.timer, "Sek.")
 					else:
 						# Action beenden
 						print("Stopping...")
@@ -213,7 +213,7 @@ class Listener:
 		# Mit leerer Config auf Stromtrennung warten
 		# Ggf. hier besser etwas mit Schalterinput
 		# statt Stromtrennung
-		self.timer = 30
+		self.timer = time.time()+30
 		self.outputs = [self.action_names.index('unpair')]
 		return b"Warte 30 Seks mit leerer Config....\n"
 
@@ -223,7 +223,7 @@ class Listener:
 		try:
 			direction, duration = data[0:2]
 			# <Rollen triggern/schalten>
-			self.timer = int(duration)
+			self.timer = time.time()+int(duration)
 			self.outputs = [self.action_names.index('roll')]
 			print("-rollen nach", direction, "fuer", duration)
 			return b"Rolle nach "+str.encode(direction)+b" fuer "+str.encode(duration)+b" Sekunden\n"
