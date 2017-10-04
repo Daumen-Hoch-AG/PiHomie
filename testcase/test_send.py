@@ -8,8 +8,8 @@ from binascii import hexlify
 
 SALT = "0"
 toSend = ""
-comm = "roll"
-params = b"%%%up%%%15"
+comm = "unpair"
+params = b""
 dlay = 5
 
 def hashToSend():
