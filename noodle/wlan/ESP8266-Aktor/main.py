@@ -223,7 +223,7 @@ class Listener:
 			return b"falsche Angabe von Argumenten\n"
 
 
-	def unpair(self, data):
+	def unpair(self):
 		"""Temporäres Lösen des Pairings für X Sekunden"""
 		with open(CONFIG_FILE, "r") as c:
 			# Caching
@@ -256,7 +256,7 @@ class Listener:
 			return b"falsche Angabe von Argumenten\n"
 
 
-	def rollstatus(self, data):
+	def rollstatus(self):
 		"""Position des Rolladens wiedergeben"""
 		print("+ rollstatus")
 		return b"Der Rolladen steht gereade irgendwo...\n"
