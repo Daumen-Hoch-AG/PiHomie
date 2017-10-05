@@ -1,14 +1,19 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-	
 
-#########################################################
-# Interrupt-Handler müssen:								#
-#														#
-#	- interrupted mit einer Liste wie folgt belegen:	#
-# 	  [str(Funktionsname), kwargs**]					#
-#	- timeout > 0 setzen								#
-#														#
-#########################################################
+####################################################
+# Interrupt-Handler müssen:
+#
+#	- interrupted mit einer Liste wie folgt belegen:
+# 	  [str(Funktionsname), kwargs**]
+#	- timeout > 0 setzen
+#
+# Benötigte Funktionen:
+#	- hoch/runter rollen
+#	- Stoppen
+#	- Unpair auslösen und bestätigen
+#
+####################################################
 
 try:
 	import uhashlib as hashlib
@@ -80,10 +85,12 @@ class Listener:
 		# Security: Link Funktionen zu Hash
 		self.generateHashes()
 
-		print("\n-- ESP bereit und listening --")
+		print("\n> ESP bereit")
 
 
 	def run(self):
+		print("\n> Listening...\n")
+
 		while True:
 
 			# > Handle Flags
@@ -102,7 +109,7 @@ class Listener:
 				else:
 					# Aktion beenden
 					self.stopAction()
-					print("\nGestoppt !")
+					print("\n- Gestoppt !")
 
 			else:
 				# Normal-Mode
@@ -203,23 +210,21 @@ class Listener:
 
 	def pair(self, data):
 		"""Aktor an eine Node binden (persistent)"""
-		print("-pairing", data)
 		try:
 			newPair, newID = data[0:2]
 			self.PAIR = newPair
 			self.ID = newID
 			self.SALT = newID
 			self.flushConf()
-			print("erfolgreich gepaired zu", newPair, "ID:", newID)
+			print("+ pairing: erfolgreich gepaired zu", newPair, "ID:", newID)
 			return b"erfolgreich gepaired zu "+str.encode(newPair)+b" ID: "+str.encode(newID)+b"\n"
 		except Exception:
-			print("falsche Angabe von Argumenten")
+			print("- pairing: falsche Angabe von Argumenten")
 			return b"falsche Angabe von Argumenten\n"
 
 
 	def unpair(self, data):
 		"""Temporäres Lösen des Pairings für X Sekunden"""
-		print("-unpair")
 		with open(CONFIG_FILE, "r") as c:
 			# Caching
 			self.cache = c.read()
@@ -230,7 +235,9 @@ class Listener:
 		# Ggf. hier besser etwas mit Schalterinput
 		# statt Stromtrennung
 		self.timer = time.time()+30
+		self.running = "unpair"
 		self.timeout = 1
+		print("+ unpair: warte 30 Seks mit leerer Config....\n")
 		return b"Warte 30 Seks mit leerer Config....\n"
 
 
@@ -242,16 +249,16 @@ class Listener:
 			self.timer = time.time()+int(duration)
 			self.running = "roll"
 			self.timeout = 0.3
-			print("-rollen nach", direction, "fuer", duration)
+			print("+ rollen nach", direction, "fuer", duration, "s")
 			return b"Rolle nach "+str.encode(direction)+b" fuer "+str.encode(duration)+b" Sekunden\n"
 		except Exception:
-			print("falsche Angabe von Argumenten")
+			print("- falsche Angabe von Argumenten")
 			return b"falsche Angabe von Argumenten\n"
 
 
 	def rollstatus(self, data):
 		"""Position des Rolladens wiedergeben"""
-		print("-rollstatus")
+		print("+ rollstatus")
 		return b"Der Rolladen steht gereade irgendwo...\n"
 
 

@@ -6,7 +6,7 @@ import hashlib
 import time
 from binascii import hexlify
 
-addr = "localhost"
+addr = "192.168.178.26"
 SALT = "0"
 toSend = ""
 comm = "roll"
