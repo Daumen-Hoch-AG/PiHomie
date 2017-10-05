@@ -1,6 +1,15 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-	
 
+#########################################################
+# Interrupt-Handler müssen:								#
+#														#
+#	- interrupted mit einer Liste wie folgt belegen:	#
+# 	  [str(Funktionsname), kwargs**]					#
+#	- timeout > 0 setzen								#
+#														#
+#########################################################
+
 try:
 	import uhashlib as hashlib
 	import ubinascii
@@ -49,7 +58,9 @@ class Listener:
 		self.SALT = SALT
 		self.actions = {}
 		# Flags
-		self.timer = 0 # (< statt int besser date.time verwenden)
+		self.timer = 0
+		self.timeout = None
+		self.running = False
 		self.interrupted = False
 		self.cache = ""
 
@@ -74,61 +85,69 @@ class Listener:
 
 	def run(self):
 		while True:
-			# Handle Interrupt-Flags
+
+			# > Handle Flags
 			if self.interrupted:
-				print("Interrupted !")
-				req = self.interrupted.split(SEP)
-				req = list(map(lambda x: x.strip(), req))
-				self.actions[req[0]](self.server, req[1:])
+				# Es gab einen Interrupt
+				print("Interrupted ! ---", self.interrupted[0])
+				# - Funktionsaufruf anhand Name
+				self.getattr(self.interrupted[0])(self.interrupted[1:])
 				self.interrupted = False
-			# Warten bis eine Liste aktiv wird
-			print("...waiting...")
-			readable, writable, exceptional = select.select(self.inputs, self.outputs, self.errors)
-			# > Inputs
-			for sock in readable:
-				if sock is self.server:
-					# neue eingehende Verbindung
-					r = self.accept_new_connection()
-					if r:
-						print("Client", r[0], ":", r[1], "connected")
 
+			elif self.running:
+				# Eine Aktion läuft noch
+				toWait = self.timer-time.time()
+				if toWait > 0:
+					print(">", self.running, "noch", round(toWait, 1), "Sek.", end="\r")
 				else:
-					# bestehende Verbindung sendet
-					try:
-						# versuche zu Empfangen
-						data = sock.recv(1024)
-						if data:
-							# Input parsen
-							print("...processing...")
-							try:
-								req = data.split(SEP)
-								req = list(map(lambda x: x.strip().decode(), req))
-								msg = self.actions[req[0]](req[1:])
-							except Exception as e:
-								print(e.__class__.__name__, ":", e)
-								msg = b"keine action\n"
-							sock.send(msg)
-						else:
-							raise Exception
-					except Exception:
-						# Hier kommt nichts mehr, Verbindung schließen
-						print("Connection closed:", sock)
-						sock.close()
-						self.inputs.remove(sock)
+					# Aktion beenden
+					self.stopAction()
+					print("\nGestoppt !")
 
-			# Outputs / Flags
-			for timer in writable:
-				if type(timer) == int and self.timer > 0:
-					# Action Listener
-					toWait = time.time()-self.timer
-					if toWait > 0:
-						# weitere Sekunde laufen lassen
-						time.sleep(1)
-						print(self.action_names[timer], "noch", toWait, "Sek. von", self.timer, "Sek.")
+			else:
+				# Normal-Mode
+				self.timeout = None
+				self.timer = 0
+
+			# Warten bis eine Liste aktiv wird
+			readable, writable, exceptional = select.select(self.inputs, self.outputs, self.errors, self.timeout)
+
+			if readable or writable or exceptional:
+				# > Inputs
+				for sock in readable:
+					if sock is self.server:
+						# neue eingehende Verbindung
+						r = self.accept_new_connection()
+						if r:
+							print("Client", r[0], ":", r[1], "connected")
+
 					else:
-						# Action beenden
-						print("Stopping...")
-						self.stopAction(timer)
+						# bestehende Verbindung sendet
+						try:
+							# versuche zu Empfangen
+							data = sock.recv(1024)
+							if data:
+								# Input parsen
+								print("...processing...")
+								try:
+									req = data.split(SEP)
+									req = list(map(lambda x: x.strip().decode(), req))
+									msg = self.actions[req[0]](req[1:])
+								except Exception as e:
+									print(e.__class__.__name__, ":", e)
+									msg = b"keine action\n"
+								sock.send(msg)
+							else:
+								raise Exception
+						except Exception:
+							# Hier kommt nichts mehr, Verbindung schließen
+							print("Connection closed:", sock)
+							sock.close()
+							self.inputs.remove(sock)
+
+			else:
+				# > Loop
+				continue
 
 
 	def generateHashes(self):
@@ -170,18 +189,15 @@ class Listener:
 		self.generateHashes()
 
 
-	def stopAction(self, timer):
+	def stopAction(self):
 		"""Stoppt Bewegung und resettet Timer"""
-		toStop = self.action_names[timer]
-		if toStop == "roll":
+		if self.running == "roll":
 			# <Stoppen triggern/schalten>
 			pass
-		elif toStop == "unpair":
+		elif self.running == "unpair":
 			# Unpairing verlassen
 			self.flushConf()
-		self.timer = 0
-		self.outputs.remove(timer)
-		return
+		self.running = False
 		return
 
 
@@ -214,7 +230,7 @@ class Listener:
 		# Ggf. hier besser etwas mit Schalterinput
 		# statt Stromtrennung
 		self.timer = time.time()+30
-		self.outputs = [self.action_names.index('unpair')]
+		self.timeout = 1
 		return b"Warte 30 Seks mit leerer Config....\n"
 
 
@@ -224,7 +240,8 @@ class Listener:
 			direction, duration = data[0:2]
 			# <Rollen triggern/schalten>
 			self.timer = time.time()+int(duration)
-			self.outputs = [self.action_names.index('roll')]
+			self.running = "roll"
+			self.timeout = 0.3
 			print("-rollen nach", direction, "fuer", duration)
 			return b"Rolle nach "+str.encode(direction)+b" fuer "+str.encode(duration)+b" Sekunden\n"
 		except Exception:
