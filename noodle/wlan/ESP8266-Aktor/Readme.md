@@ -1,3 +1,17 @@
+# Quick Start
+
+1. Anschließen des ESP am UART und starten im Boot-Modus
+1. Löschen des Flash Speichers mit dem `esptool.py`
+1. Trennen der Stromverbindung und Neustart im Boot-Modus
+1. Installieren der Firmware `esp8266-X-vX.X.X.bin`
+1. Trennen der Stromverbindung
+1. Anschluss an UART und eigener Stromverbindung für einen normaler Start
+1. Zugriff über den UART und installieren der `WebREPL Konsole`
+1. Anpassen der `boot.py` und ggf. `main_config.cfg` im Repository
+1. Normaler Neustart und verbinden über `WebREPL Konsole`
+1. Alle Dateien für den `ESP8266-Aktor` dort übertragen
+1. Deaktivieren der `WebREPL Konsole`
+
 # Initialisierung der ESP8266 Aktoren mit MicroPython
 
 Die Initialisierung wird mit Hilfe eines USB to UART Adapters vorgenommen (3,3V). Die Pins des Aktors werden mit dem Programmer verbunden RX und TX sind hierbei über kreuz zu verbinden.
@@ -51,10 +65,12 @@ Auch die restlichen Dateien in diesem Verzeichnis müssen über die Remotekonsol
 Nach einem Reboot sollte sich der Aktor mit dem WLAN verbunden haben und über eine per DHCP zugewiesene IP (WebREPL unter dem Standardport 8266) zu erreichen sein.
 
 ## Eigenen Accesspoint des ESP sichern
-Nachdem alle Dateien übermittelt und getestet worden sind, sollte der Standard-Accesspoint im Produktivbetrieb wieder deaktiviert werden. Dazu einfach wieder
+Nachdem alle Dateien übermittelt und getestet worden sind, sollte die WebREPL Konsole wieder deaktiviert werden. Dazu einfach wieder
 
 	screen /dev/ttyUSB0 115200
 
 aufrufen und mit `import webrepl_setup` deaktivieren.
 
-Alternativ kann für die WebREPL Konsole auch ein sehr sicheres Passwort verwendet werden. Eine Verbindung zum Accesspoint kann man mit dem Standar-Kennwort aber trotzdem aufbauen !
+Alternativ kann für die WebREPL Konsole auch ein sehr sicheres Passwort verwendet werden.
+
+Eine Verbindung zum Accesspoint kann man mit dem Standar-Kennwort aber trotzdem aufbauen !
