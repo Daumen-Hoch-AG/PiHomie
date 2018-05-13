@@ -1,8 +1,9 @@
 # This file is executed on every boot (including wake-boot from deepsleep)
 #import esp
 #esp.osdebug(None)
+#import webrepl
 import gc
-import webrepl
+
 
 def do_connect():
 	import network
@@ -16,5 +17,5 @@ def do_connect():
 	print('network config:', sta_if.ifconfig())
 
 do_connect()
-webrepl.start()
+#webrepl.start()
 gc.collect()
