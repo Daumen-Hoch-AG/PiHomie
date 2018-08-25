@@ -28,9 +28,16 @@ echo
 echo "=> Starte Modul Core"
 echo
 
+addgroup pihomie
+adduser --no-create-home --disabled-login --ingroup pihomie --gecos "" pihomie
+
+git clone https://github.com/Daumen-Hoch-AG/PiHomie.git
+chown pihomie:pihomie -R /opt/PiHomie
+
 apt update && apt upgrade -y
 apt install -y \
 	git
+	python3-pip
 
 # =============================
 # Start der zusätzlichen Module:
