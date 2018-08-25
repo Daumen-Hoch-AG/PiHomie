@@ -33,7 +33,7 @@ echo
 # Pakete
 apt update && apt upgrade -y
 apt install -y \
-	python3-flask \
+	python3-flask python3-requests \
 	apache2 libapache2-mod-wsgi-py3
 apt autoremove -y
 
