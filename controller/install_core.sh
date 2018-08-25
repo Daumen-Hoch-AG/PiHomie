@@ -19,7 +19,8 @@ echo "- Core"
 # Zusätzliche Konfigurationsmodule können hier eingehängt werden:
 modules=()
 SCRIPT_PATH="`dirname \"$0\"`"
-ROOT_PATH="`( cd \"../$SCRIPT_PATH\" && pwd )`"
+SCRIPT_PATH="`( cd \"$SCRIPT_PATH\" && pwd )`"
+ROOT_PATH="`( cd \"../$SCRIPT_PATH/..\" && pwd )`"
 
 
 # =============================
