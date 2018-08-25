@@ -1,4 +1,4 @@
-##Struktur
+## Struktur
 - Zweiteilung in Engine (Logik) und Panel (Web-Panel und später APPs?)
 	* DB REST API
 	* WebApp statt native App
@@ -12,10 +12,10 @@
 	* zur Prioritätenliste: <a href="https://github.com/Daumen-Hoch-AG/SmartHouse/projects/3">Project #3</a>
 	
 	
-##Codestruktur
+## Codestruktur
 - Dateinamen für Sensoren und Aktoren: NameOberklasse_Hersteller_Typ.py Bsp: RollerShutter_Fibaro_fg222.py
 
-##Programmierung
+## Programmierung
 - Logging Service, auftrennen in Exception-Log und Normales-Log
 	* Jede Exception führt zu einem Log-Eintrag
 	* Jede Aktion z.B. Rolladen geschlossen o.ä. führt zu einem Log-Eintrag
