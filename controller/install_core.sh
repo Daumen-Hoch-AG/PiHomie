@@ -20,7 +20,7 @@ echo "- Core"
 modules=()
 SCRIPT_PATH="`dirname \"$0\"`"
 SCRIPT_PATH="`( cd \"$SCRIPT_PATH\" && pwd )`"
-ROOT_PATH="`( cd \"../$SCRIPT_PATH/..\" && pwd )`"
+ROOT_PATH="`( cd \"$SCRIPT_PATH/..\" && pwd )`"
 
 
 # =============================
