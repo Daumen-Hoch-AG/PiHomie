@@ -78,11 +78,15 @@ sed -i -e "/127\.0\.1\.1/ s/.*/127\.0\.1\.1\t${HOSTNAME}/g" /etc/hosts
 
 # -- Apache2
 a2enmod wsgi
-sed -i -e "s|%%PIHOMIE_ROOT%%|${SCRIPT_PATH}|" $SCRIPT_PATH/res/apache_vhost.conf
+sed -i -e "s|%%HOSTNAME%%|${HOSTNAME}|" $SCRIPT_PATH/res/apache_vhost.conf
+sed -i -e "s|%%PIHOMIE_ROOT%%|${ROOT_PATH}/controller|" $SCRIPT_PATH/res/apache_vhost.conf
 sed -i -e "s|%%PIHOMIE_GATEWAY%%|${ROOT_PATH}/controller/gateway.wsgi|" $SCRIPT_PATH/res/apache_vhost.conf
 mv $SCRIPT_PATH/res/apache_vhost.conf /etc/apache2/sites-available/pihomie.conf
 a2ensite pihomie
 service apache2 reload
+
+echo "\n--- Modul erfolgreich eingerichtet !\n"
+
 
 
 # =============================
@@ -93,4 +97,17 @@ do
 	echo
 	echo "=> Starte Modul $m"
 	echo
+	# ...do stuff...
+	echo "\n--- Modul erfolgreich eingerichtet !\n"
 done
+
+
+# =============================
+# Ende:
+# =============================
+echo
+echo "================================"
+echo "PiHomie Controller wurde"
+echo "erfolgreich eingerichtet !"
+echo "================================"
+echo
