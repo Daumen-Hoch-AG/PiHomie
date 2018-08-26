@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# Installation der Abhängigkeiten für PiHomie
+# Installation des PiHomie Controllers
 # auf einem Raspian Stretch (Lite)
 
 # Sudo Check:
@@ -85,8 +85,9 @@ mv $SCRIPT_PATH/res/apache_vhost.conf /etc/apache2/sites-available/pihomie.conf
 a2ensite pihomie
 service apache2 reload
 
-echo "\n--- Modul erfolgreich eingerichtet !\n"
-
+echo
+echo "--- Modul Core erfolgreich eingerichtet ! ---"
+echo
 
 
 # =============================
@@ -97,8 +98,12 @@ do
 	echo
 	echo "=> Starte Modul $m"
 	echo
+
 	# ...do stuff...
-	echo "\n--- Modul erfolgreich eingerichtet !\n"
+	
+	echo
+	echo "--- Modul $m erfolgreich eingerichtet ! ---"
+	echo
 done
 
 
