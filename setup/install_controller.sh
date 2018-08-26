@@ -41,15 +41,9 @@ done
 echo
 echo "> Gib den Hostname für diesen Controller ein oder lasse ihn leer für 'PiHomie' - [ENTER]"
 read user_hostname
-if [ !-z "$user_hostname" ]; then
+if [[ ! -z "$user_hostname" ]]; then
 	HOSTNAME=$user_hostname
 fi
-
-echo $SCRIPT_PATH
-echo $ROOT_PATH
-echo $HOSTNAME
-sed -e '/127\.0\.1\.1/ s/.*/127\.0\.1\.1\t${HOSTNAME}/g' /etc/hosts
-exit 0
 
 
 # =============================
@@ -80,7 +74,7 @@ cd $ROOT_PATH
 
 # -- Hostname
 hostname -b $HOSTNAME
-sed -i -e '/127\.0\.1\.1/ s/.*/127\.0\.1\.1\t${HOSTNAME}/g' /etc/hosts
+sed -i -e "/127\.0\.1\.1/ s/.*/127\.0\.1\.1\t${HOSTNAME}/g" /etc/hosts
 
 # -- Apache2
 a2enmod wsgi
