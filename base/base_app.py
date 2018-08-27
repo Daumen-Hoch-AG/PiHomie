@@ -21,7 +21,7 @@ def create_app(Host, config_path):
 	app.config['BaseDir'] = os.path.dirname(os.path.realpath(__file__))
 	app.config['FILE'] = config
 
-"""
+	"""
 	infoHandler = logging.FileHandler(app.config['FILE']['logging']['info'])
 	infoHandler.setLevel(logging.INFO)
 	app.logger.addHandler(infoHandler)
@@ -32,7 +32,7 @@ def create_app(Host, config_path):
 	errHandler = logging.FileHandler(app.config['FILE']['logging']['error'])
 	errHandler.setLevel(logging.ERROR)
 	app.logger.addHandler(errHandler)
-"""
+	"""
 
 	host = Host()
 
