@@ -23,14 +23,16 @@ def create_app(Host, config_path):
 
 	infoHandler = logging.FileHandler(app.config['FILE']['logging']['info'])
 	infoHandler.setLevel(logging.INFO)
+	app.logger.addHandler(infoHandler)
+	
 	warnHandler = logging.FileHandler(app.config['FILE']['logging']['warning'])
 	warnHandler.setLevel(logging.WARNING)
+	app.logger.addHandler(warnHandler)
+
 	errHandler = logging.FileHandler(app.config['FILE']['logging']['error'])
 	errHandler.setLevel(logging.ERROR)
-
-	app.logger.addHandler(infoHandler)
-	app.logger.addHandler(warnHandler)
 	app.logger.addHandler(errHandler)
+
 
 	host = Host()
 
