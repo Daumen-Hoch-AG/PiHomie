@@ -1,9 +1,10 @@
 import pytest
-from PiHomie import create_app
+from base.base_app import create_app
+from controller.controller_handler import Controller
 
 @pytest.fixture
 def client():
-    return create_app().test_client()
+    return create_app(Controller).test_client()
 
 def test_base_communication(client):
     response = client.get("/api",json={"command":"test","data":{"message":"bla"}})
