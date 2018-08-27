@@ -15,4 +15,3 @@ from controller_handler import Controller # Variabel
 
 
 app = create_app(Controller)
-app.run()

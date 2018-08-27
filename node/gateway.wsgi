@@ -15,4 +15,3 @@ from node_handler import Node # Variabel
 
 
 app = create_app(Node)
-app.run()

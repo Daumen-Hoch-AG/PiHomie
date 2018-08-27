@@ -6,7 +6,7 @@ import os, configparser
 
 
 def create_app(Host):
-	app = Flask(__name__)
+	app = Flask("PiHomie")
 	app.secret_key=os.urandom(24)
 
 	app.config['BaseDir'] = os.path.dirname(os.path.realpath(__file__))
