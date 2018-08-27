@@ -57,8 +57,11 @@ echo
 # Pakete
 apt update && apt upgrade -y
 apt install -y \
-	python3-flask python3-requests \
+	python3-pip python3-requests \
 	apache2 libapache2-mod-wsgi-py3
+pip3 install --upgrade pip
+pip3 install flask
+pip3 install --upgrade flask
 #apt autoremove -y
 
 
