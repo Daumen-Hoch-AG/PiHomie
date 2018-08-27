@@ -11,7 +11,7 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 
 from base.base_app import create_app
-from controller_handler import Controller # Variabel
+from controller_handler import Controller # variabel
 
 
 config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.ini")

@@ -4,7 +4,7 @@ from controller.controller_handler import Controller
 
 @pytest.fixture
 def client():
-    test_config = "test.cfg"
+    test_config = "testcfg.ini"
     return create_app(Controller, test_config).test_client()
 
 def test_base_communication(client):
