@@ -62,6 +62,7 @@ apt install -y \
 pip3 install --upgrade pip
 pip3 install flask
 pip3 install --upgrade flask
+pip3 install flask-sqlalchemy
 #apt autoremove -y
 
 
