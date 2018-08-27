@@ -16,6 +16,7 @@ SCRIPT_PATH="`dirname \"$0\"`"
 SCRIPT_PATH="`( cd \"$SCRIPT_PATH\" && pwd )`"
 ROOT_PATH="`( cd \"$SCRIPT_PATH/..\" && pwd )`"
 HOSTNAME="PiHomie"
+LOGPATH="/var/log/pihomie"
 
 
 echo
@@ -69,10 +70,15 @@ pip3 install \
 
 
 # Benutzer und Rechte für PiHomie
+mkdir -p $LOGPATH
 addgroup pihomie
 adduser --no-create-home --disabled-login --ingroup pihomie --gecos "" pihomie
 usermod -a -G www-data pihomie
+
+chown pihomie:www-data -R $LOGPATH
+chmod 665 -R $LOGPATH
 chown pihomie:www-data -R $ROOT_PATH
+
 cd $ROOT_PATH
 
 

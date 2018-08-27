@@ -2,14 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, request, jsonify
-import os, configparser
+import os, configparser, logging
 
 
 def create_app(Host, config_path):
 	app = Flask("PiHomie")
 	app.secret_key=os.urandom(24)
-
-
 
 	#
 	# The path to the instance folder can be found via the Flask.instance_path. Flask also provides a shortcut to open a file from the instance folder with Flask.open_instance_resource().
@@ -22,6 +20,17 @@ def create_app(Host, config_path):
 
 	app.config['BaseDir'] = os.path.dirname(os.path.realpath(__file__))
 	app.config['FILE'] = config
+
+	infoHandler = logging.FileHandler(app.config['FILE']['logging']['info'])
+	infoHandler.setLevel(logging.INFO)
+	warnHandler = logging.FileHandler(app.config['FILE']['logging']['warning'])
+	warnHandler.setLevel(logging.WARNING)
+	errHandler = logging.FileHandler(app.config['FILE']['logging']['error'])
+	errHandler.setLevel(logging.ERROR)
+
+	app.logger.addHandler(infoHandler)
+	app.logger.addHandler(warnHandler)
+	app.logger.addHandler(errHandler)
 
 	host = Host()
 
