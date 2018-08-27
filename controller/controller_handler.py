@@ -9,5 +9,5 @@ class Controller(BaseHandler):
 		}
 
 	def handle_test(self, data):
-		current_app.logger.info("Test handled")
+		#current_app.logger.info("Test handled")
 		return data, 200
