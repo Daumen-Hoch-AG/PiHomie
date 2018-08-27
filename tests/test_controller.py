@@ -4,7 +4,8 @@ from controller.controller_handler import Controller
 
 @pytest.fixture
 def client():
-    return create_app(Controller).test_client()
+    test_config = "test.cfg"
+    return create_app(Controller, test_config).test_client()
 
 def test_base_communication(client):
     response = client.get("/api",json={"command":"test","data":{"message":"bla"}})
