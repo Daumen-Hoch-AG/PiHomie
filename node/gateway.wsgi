@@ -14,4 +14,4 @@ from base.base_app import create_app
 from node_handler import Node # Variabel
 
 
-app = create_app(Node)
+application = create_app(Node)

@@ -14,4 +14,4 @@ from base.base_app import create_app
 from controller_handler import Controller # Variabel
 
 
-app = create_app(Controller)
+application = create_app(Controller)
