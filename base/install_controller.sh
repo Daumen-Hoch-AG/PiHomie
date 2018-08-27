@@ -59,10 +59,12 @@ apt update && apt upgrade -y
 apt install -y \
 	python3-pip python3-requests \
 	apache2 libapache2-mod-wsgi-py3
+
 pip3 install --upgrade pip
-pip3 install flask
-pip3 install --upgrade flask
-pip3 install flask-sqlalchemy
+pip3 install \
+	requests flask flask-sqlalchemy
+#pip3 install --upgrade flask
+
 #apt autoremove -y
 
 
@@ -82,10 +84,10 @@ sed -i -e "/127\.0\.1\.1/ s/.*/127\.0\.1\.1\t${HOSTNAME}/g" /etc/hosts
 
 # -- Apache2
 a2enmod wsgi
-sed -i -e "s|%%HOSTNAME%%|${HOSTNAME}|" $SCRIPT_PATH/res/apache_vhost.conf
-sed -i -e "s|%%PIHOMIE_ROOT%%|${ROOT_PATH}/controller|" $SCRIPT_PATH/res/apache_vhost.conf
-sed -i -e "s|%%PIHOMIE_GATEWAY%%|${ROOT_PATH}/controller/gateway.wsgi|" $SCRIPT_PATH/res/apache_vhost.conf
-mv $SCRIPT_PATH/res/apache_vhost.conf /etc/apache2/sites-available/pihomie.conf
+sed -i -e "s|%%HOSTNAME%%|${HOSTNAME}|" $SCRIPT_PATH/apache_vhost.conf
+sed -i -e "s|%%PIHOMIE_ROOT%%|${ROOT_PATH}/controller|" $SCRIPT_PATH/apache_vhost.conf
+sed -i -e "s|%%PIHOMIE_GATEWAY%%|${ROOT_PATH}/controller/gateway.wsgi|" $SCRIPT_PATH/apache_vhost.conf
+mv $SCRIPT_PATH/apache_vhost.conf /etc/apache2/sites-available/pihomie.conf
 a2ensite pihomie
 service apache2 reload
 
