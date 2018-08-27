@@ -13,5 +13,5 @@ sys.path.append(parent_dir)
 from base.base_app import create_app
 from node_handler import Node # Variabel
 
-
+config_path = os.path.dirname(os.path.realpath(__file__))
 application = create_app(Node)

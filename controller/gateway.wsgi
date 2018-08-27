@@ -14,4 +14,5 @@ from base.base_app import create_app
 from controller_handler import Controller # Variabel
 
 
-application = create_app(Controller)
+config_path = os.path.dirname(os.path.realpath(__file__))
+application = create_app(Controller, config_path)
