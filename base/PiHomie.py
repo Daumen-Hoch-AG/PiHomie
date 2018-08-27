@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from flask import Flask
+from flask import Flask, request, jsonify
 import os, configparser
 
 
@@ -16,13 +16,14 @@ def create_app():
     ################
 	config = configparser.ConfigParser()
 	cfg_file = os.path.join(app.config['BaseDir'],'config.ini')
+	config.read(cfg_file)
 
-	if config['TYPE'].upper() == "CONTROLLER":
-		from .handler.controller_handler import Controller as Host
-	elif config['TYPE'].upper() == "KNODE":
-		from .handler.controller_handlerimport Knode as Host
+	if config['BASE']['Type'].upper() == "CONTROLLER":
+		from handler.controller_handler import Controller as Host
+	elif config['BASE']['Type'].upper() == "KNODE":
+		from handler.knode_handler import Knode as Host
 	
-	hoost = Host()
+	host = Host()
 
 
 	@app.route("/api")
