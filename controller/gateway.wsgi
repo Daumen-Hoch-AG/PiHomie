@@ -10,8 +10,8 @@ if sys.version_info[0]<3:	# (require python3)
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 
-from PiHomie import create_app
-from handler.controller_handler import Controller # Variabel
+from base.base_app import create_app
+from controller_handler import Controller # Variabel
 
 
 app = create_app(Controller)

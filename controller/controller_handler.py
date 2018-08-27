@@ -1,4 +1,4 @@
-from .base_handler import BaseHandler
+from base.base_handler import BaseHandler
 
 class Controller(BaseHandler):
     def __init__(self):
