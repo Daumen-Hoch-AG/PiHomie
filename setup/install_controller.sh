@@ -63,7 +63,7 @@ apt install -y \
 
 pip3 install --upgrade pip
 pip3 install \
-	requests flask flask-sqlalchemy
+	requests flask flask-sqlalchemy pycrypto
 #pip3 install --upgrade flask
 
 #apt autoremove -y
