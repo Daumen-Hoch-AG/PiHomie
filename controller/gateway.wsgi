@@ -14,5 +14,5 @@ from base.base_app import create_app
 from controller_handler import Controller # variabel
 
 
-config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.ini")
+config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.json")
 application = create_app(Controller, config_path)

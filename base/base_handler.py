@@ -1,10 +1,13 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 from Crypto import Random
 from Crypto.PublicKey import RSA
 from flask import current_app
 import base64, os, json
 
 class BaseHandler(object):
-
+    '''Basisklasse für alle Hosts, übernimmt Auswahl der behandlenden Methode sowie Ver- und Entschlüsselung'''
     def __init__(self):
         self.handler = dict()
 
@@ -12,7 +15,7 @@ class BaseHandler(object):
         try:
             #Client identifizieren -> Zertifikat für die Antwort auswählen
             #remote_ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr).replace('.','-')
-            #client_cert = os.path.join(current_app.config['BaseDir'],current_app.config['SERVER']['ClientCertDir'],remote_ip + '.pem')
+            #client_cert = os.path.join(current_app.config['CLIENTCERTDIR'],remote_ip + '.pem')
 
             #JSON aus dem Request ziehen
             message = request.get_json()
@@ -28,7 +31,7 @@ class BaseHandler(object):
                 if handler_func != "FAIL":
                     
                     #data_dec = self.decrypt_data(data)
-                    message_to_send,code = handler_func(data)
+                    message_to_send,code = handler_func(data, request)
                     return self.send_response(code, message_to_send)
                 else:
                     raise NotImplementedError("Kommando nicht implementiert.")
@@ -38,13 +41,13 @@ class BaseHandler(object):
                 
         except RSA.binascii.Error as ex:
             #Wenn Daten z.B. nicht verschlüsselt sind.
-            return self.send_error_response(500, "Fehler beim Entschlüsseln!")
+            return self.send_error_response(500, "RSA Error: "+str(ex), client_cert)
         except KeyError as ex:
-            return self.send_error_response(400, "Falsches Format des Requests!")
+            return self.send_error_response(400, "KeyError: "+str(ex), client_cert)
         except NotImplementedError as ex:
-            return self.send_error_response(501, "Command nicht implementiert!")
+            return self.send_error_response(501, "NotImplementedError: "+str(ex), client_cert)
         except Exception as ex:
-            return self.send_error_response(500, "Unbekannter Fehler - " + ex)
+            return self.send_error_response(500, "Unbekannter Fehler - " + str(ex), client_cert)
 
 
     #####################################################################
@@ -53,10 +56,9 @@ class BaseHandler(object):
     def decrypt_data(self, data):
         '''Entschlüsselt das in "data" enthaltenen JSON mit Hilfe des privaten Schlüssels des Servers'''
         #Öffnen und importieren des privaten Schlüssels des Servers
-        priv_cert = os.path.join(current_app.config['BaseDir'],current_app.config['SERVER']["PrivCert"])
-        print(priv_cert)
+        priv_cert = current_app.config['PRIVCERT']
         priv_key_file = open(priv_cert,'r').read()
-        priv_key = RSA.importKey(priv_key_file,passphrase=current_app.config['SERVER']['Passphrase'])
+        priv_key = RSA.importKey(priv_key_file,passphrase=current_app.config['PASSPHRASE'])
 
         #Entschlüsseln der Nachricht
         decoded_data_enc = base64.b64decode(data)
