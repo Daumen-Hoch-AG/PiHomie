@@ -61,10 +61,8 @@ apt install -y \
 	python3-pip python3-requests \
 	apache2 libapache2-mod-wsgi-py3
 
-pip3 install --upgrade pip
-pip3 install \
+python3 -m pip install \
 	requests flask flask-sqlalchemy pycrypto
-#pip3 install --upgrade flask
 
 #apt autoremove -y
 

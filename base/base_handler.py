@@ -16,6 +16,7 @@ class BaseHandler(object):
             #Client identifizieren -> Zertifikat für die Antwort auswählen
             #remote_ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr).replace('.','-')
             #client_cert = os.path.join(current_app.config['CLIENTCERTDIR'],remote_ip + '.pem')
+            client_cert = ""
 
             #JSON aus dem Request ziehen
             message = request.get_json()
@@ -32,7 +33,7 @@ class BaseHandler(object):
                     
                     #data_dec = self.decrypt_data(data)
                     message_to_send,code = handler_func(data, request)
-                    return self.send_response(code, message_to_send)
+                    return self.send_response(code, message_to_send, client_cert)
                 else:
                     raise NotImplementedError("Kommando nicht implementiert.")
 
@@ -76,20 +77,20 @@ class BaseHandler(object):
         encrypted_data_enc = base64.b64encode(encrypted_data)
         return encrypted_data_enc.decode('utf-8')
 
-    def send_response(self, code, message):
+    def send_response(self, code, message, client_cert):
         '''Verschlüsselt die Daten und gibt die fertige, sendebereite, response zurück! 
         Wird eine leere Nachricht übergeben wird ein leerer String zurückgegeben. -> Nur Status-Code wird zurückgegeben'''
         if len(message) > 0:
-            #message_enc = self.encrypt_response(message,clientcert)
+            #message_enc = self.encrypt_response(message,client_cert)
             message_to_send = {"data":message}
             
             return message_to_send, code
         else:
             return "", code
 
-    def send_error_response(self, code, message):
+    def send_error_response(self, code, message, client_cert):
         '''Sendet eine Fehlermeldung'''
         data_to_send = {'message':message}
-        #data_to_send_enc = self.encrypt_response(data_to_send,clientcert)
+        #data_to_send_enc = self.encrypt_response(data_to_send,client_cert)
         message_to_send = {'data':data_to_send}
         return message_to_send, code
