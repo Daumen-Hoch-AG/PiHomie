@@ -17,18 +17,19 @@ def create_app(Host, config_path):
 	app.config['PRIVCERT'] = os.path.join(app.config['BaseDir'],app.config['PRIVCERT'])
 	app.config['CLIENTCERTDIR'] = os.path.join(app.config['BaseDir'],app.config['CLIENTCERTDIR'])
 
+	# Logging
+	standardlog_handler = RotatingFileHandler('pihomie.log', maxBytes=1024 * 1024 * 100, backupCount=1)
+	standardlog_handler.setLevel(logging.INFO)
+	standardlog_handler.setFormatter(logging.Formatter('[%(asctime)s] %(levelname)s : %(message)s'))
+	app.logger.addHandler(standardlog_handler)
 	"""
-	infoHandler = logging.FileHandler(app.config['FILE']['logging']['info'])
-	infoHandler.setLevel(logging.INFO)
-	app.logger.addHandler(infoHandler)
-	
-	warnHandler = logging.FileHandler(app.config['FILE']['logging']['warning'])
-	warnHandler.setLevel(logging.WARNING)
-	app.logger.addHandler(warnHandler)
-	errHandler = logging.FileHandler(app.config['FILE']['logging']['error'])
-	errHandler.setLevel(logging.ERROR)
-	app.logger.addHandler(errHandler)
+	# ---- ???
+	sqlalchemy_logger = logging.getLogger('sqlalchemy_logger')
+	sql_handler = RotatingFileHandler('sqlalchemy.log', maxBytes=1024 * 1024 * 100, backupCount=1)
+	# (lasse Config auf Modul-Standard...)
+	sqlalchemy_logger.addHandler(sql_handler)
 	"""
+
 
 	# Host Objekt initialiseren und Config übergeben
 	with app.app_context():
