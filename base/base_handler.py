@@ -42,13 +42,21 @@ class BaseHandler(object):
                 
         except RSA.binascii.Error as ex:
             #Wenn Daten z.B. nicht verschlüsselt sind.
-            return self.send_error_response(500, "RSA Error: "+str(ex), client_cert)
+            msg = "RSA Error: "+str(ex)
+            current_app.logger.error(msg)
+            return self.send_error_response(500, msg, client_cert)
         except KeyError as ex:
-            return self.send_error_response(400, "KeyError: "+str(ex), client_cert)
+            msg = "KeyError: "+str(ex)
+            current_app.logger.error(msg)
+            return self.send_error_response(400, msg, client_cert)
         except NotImplementedError as ex:
-            return self.send_error_response(501, "NotImplementedError: "+str(ex), client_cert)
+            msg =  "NotImplementedError: "+str(ex)
+            current_app.logger.error(msg)
+            return self.send_error_response(501,msg, client_cert)
         except Exception as ex:
-            return self.send_error_response(500, "Unbekannter Fehler - " + str(ex), client_cert)
+            msg = "Unbekannter Fehler - " + str(ex)
+            current_app.logger.error(msg)
+            return self.send_error_response(500, msg, client_cert)
 
 
     #####################################################################

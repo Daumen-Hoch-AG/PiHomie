@@ -1,13 +1,13 @@
 {
-	"HOST" : "controller",
+	"HOST" : "node",
 	"PRIVCERT" : "certs/private.pem",
 	"PASSPHRASE" : "Hallo123!",
 	"CLIENTCERTDIR" : "certs/clients/",
 	"SQLALCHEMY_DATABASE_URI" : "sqlite:////tmp/test.db",
 	"SQLALCHEMY_TRACK_MODIFICATIONS" : "False",
 	"LOGGING" : {
-		"INFO" : "/var/log/pihomie/info.log",
+		"STANDARD" : "/var/log/pihomie/info.log",
 		"WARNING" : "/var/log/pihomie/warning.log",
-		"ERROR" : "/var/log/pihomie/error.log"
+		"SQL" : "/var/log/pihomie/error.log"
 	}
 }
