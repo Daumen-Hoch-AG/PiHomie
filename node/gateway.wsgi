@@ -13,5 +13,9 @@ sys.path.append(parent_dir)
 from base.base_app import create_app
 from node_handler import Node # variabel
 
-config_path = os.path.dirname(os.path.realpath(__file__))
-application = create_app(Node)
+config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.json")
+application = create_app(Node, config_path)
+
+### DEBUG ###
+#application.run(debug=True)
+### DEBUG ###

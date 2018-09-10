@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 from threading import Thread
@@ -18,11 +18,11 @@ class ZWaveDummy(Thread):
             if not self.queue.empty():
                 text = self.queue.get()
                 self.node.testPrint(text)
-                print text, "<---- Dummy"
+                print(text, "<---- Dummy")
                 if text == "kill":
                     self.alive = False
                 time.sleep(5)
-        print "Beende Dummy..."
+        print("Beende Dummy...")
 
 
     def addToQueue(self, command):
