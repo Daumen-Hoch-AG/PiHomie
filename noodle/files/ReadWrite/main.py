@@ -12,18 +12,33 @@ class ReadWriter():
 		self.workspace = workspace
 
 
-	def readIt( self, theFile="{}{}.tmp".format(self.name, self.id) ):
+	def readItAll( self, theFile="{}{}.tmp".format(self.name, self.id) ):
 		'''Lesen von Daten'''
 		with open( os.path.join(self.workspace, theFile), 'r' ) as f:
 			return f.read()
 
 
-	def writeIt( self, toWrite, theFile="{}{}.tmp".format(self.name, self.id) ):
+	def readItByLine( self, theFile="{}{}.tmp".format(self.name, self.id) ):
+		'''Lesen von Daten'''
+		result_dict = {}
+		linenumber = 0
+		with open( os.path.join(self.workspace, theFile), 'r' ) as f:
+			for line in f:
+				linenumber += 1
+				result_dict[linenumber] = line
+		return result_dict
+
+
+	def writeItAll( self, toWrite, theFile="{}{}.tmp".format(self.name, self.id) ):
 		'''Schreiben von Daten'''
 		with open( os.path.join(self.workspace, theFile), 'w' ) as f:
 			return f.read()
 
 
-# DEV-Notes:
-# - Wie ist die Erreichbarkeit/Listener für diese Funktionen ?
-# - Node-Klasse für dieses Noodle erforderlich
+	def writeSpecificLine( self, toWrite, theLine, theFile="{}{}.tmp".format(self.name, self.id) ):
+		'''Schreiben von Daten in eine bestimmte Zeile'''
+		content = self.readItByLine(theFile)
+		content[theLine] = toWrite
+		return content
+
+# Dieses Noodle wird wahrscheinlich über subprocess aufgerufen
