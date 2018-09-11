@@ -17,6 +17,6 @@ class Controller(BaseHandler):
 		self.db.init_app(current_app)
 		self.db.create_all()
 
-	def handle_test(self, data):
-		current_app.logger.info("Test handled")# ohne Wirkung bisher
+	def handle_test(self, data, request):
+		current_app.logger.info("Test handled")
 		return data, 200

@@ -35,12 +35,12 @@ def create_app(Host, config_path):
 
 
 	# -- SQL Database
-	""" #---> Get SQLAlchemy Logger, ändern und binden an Flask
+	#---> Get SQLAlchemy Logger, ändern und binden an Flask
 	sqlalchemy_logger = getLogger('sqlalchemy_logger')
 	sql_handler = handlers.RotatingFileHandler(app.config['LOGGING']['SQL'], maxBytes=1024 * 1024 * 100, backupCount=1)
 	# (lasse Config auf Modul-Standard...)
 	sqlalchemy_logger.addHandler(sql_handler)
-	"""
+	
 
 	# -- absolutes Loglevel (Minimum)
 	app.logger.setLevel(INFO)
