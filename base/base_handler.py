@@ -23,16 +23,17 @@ class BaseHandler(object):
             #Wenn request.get_json() None zurückgibt -> nicht json formatiert
             if message is None:
                 raise KeyError("Der Request hat das falsche Format.")
-            command = message.get('command','FAIL')
-            data = message.get('data','FAIL')
-            if command != "FAIL" and data != "FAIL":
+            command = message.get('command', None)
+            data = message.get('data', None)
+            options = message.get('options', None)
+            if command: #options und data optional
                 #Aufrufen des Handlers für das Command aus der entsprechenden Klasse des Hosts
-                handler_func = self.handler.get(command,"FAIL")
+                handler_func = self.handler.get(command, None)
                 
-                if handler_func != "FAIL":
+                if handler_func:
                     
                     #data_dec = self.decrypt_data(data)
-                    message_to_send,code = handler_func(data, request)
+                    message_to_send,code = handler_func(options, data, request)
                     return self.send_response(code, message_to_send, client_cert)
                 else:
                     raise NotImplementedError("Kommando nicht implementiert.")
