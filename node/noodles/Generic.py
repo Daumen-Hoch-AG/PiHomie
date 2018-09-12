@@ -15,7 +15,7 @@ class Noodle(object):
 			'warning': current_app.logger.warning,
 			'error': current_app.logger.error,
 		}
-		self.LOG['info']( "Hi, {} {} initialisiert (Klasse: Noodle)".format( self.getTypeId(), self.id) )
+		self.LOG['info']( "Hello ! {} mit ID {} wurde initialisiert".format( self.getTypeId(), self.id) )
 
 	@classmethod
 	def getTypeId(cls):

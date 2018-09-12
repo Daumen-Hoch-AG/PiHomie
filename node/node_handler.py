@@ -3,18 +3,21 @@ from flask import current_app
 import requests, uuid, json
 
 #TODO: Noodle definitionen und Liste Zentral ablegen?
-from node.noodles import *
+from node.noodles import ReadWrite
 
 class Node(BaseHandler):
     def __init__(self):
         super().__init__()
+        self.noodles = dict()
+        self.noodle_classes = {
+            ReadWrite.Writer.getTypeId():ReadWrite.Writer,
+            ReadWrite.Reader.getTypeId():ReadWrite.Reader,
+        }
 
         host = current_app.config['CONTROLLER']['HOST']
         port = current_app.config['CONTROLLER']['PORT']
         self.uuid = current_app.config['UUID'] #Setzt uuid aus Config
         self.controller_endpoint = "http://{}:{}/api".format(host,port)
-        self.init_node() 
-
         self.dict = {
             "setValue" : self.setValue,
             "setAll" : self.setAll,
@@ -23,12 +26,9 @@ class Node(BaseHandler):
             "getValuesAsDictionary" : self.getValuesAsDictionary,
             "getValue" : self.getValue,
         }
-        self.noodle_classes = {
-            ReadWrite.Writer.getTypeId():ReadWrite.Writer,
-            ReadWrite.Reader.getTypeId():ReadWrite.Reader,
-        }
 
-        self.noodles = dict()
+        self.init_node()
+
 
     def init_node(self):
         '''Erste Kontaktaufnahme mit dem Server, Initialisierung der Noodles.'''
@@ -38,10 +38,11 @@ class Node(BaseHandler):
             #Initialisieren
             #Ausgehend von Response im Format, bsp: OK-200 {'options':{},'data':[{
             # 'type':'Writer', 'options':{...}, 'data':{...}},]}
+            r = r.json()
             for noodle in r["data"]:
                 n = self.noodle_classes.get(noodle['type'],False)
                 if n:
-                    new_noodle = n(noodle['options'],noodle['data'])
+                    new_noodle = n(noodle['options'],noodle['data'], lambda x: print(x))#TODO: Callback definieren
                     self.noodles[new_noodle.id] = new_noodle
         else:
             raise Exception("Node konnte nicht initialisiert werden, für Details siehe Logs des Controllers bzw. des Nodes!")
