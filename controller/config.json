@@ -1,5 +1,7 @@
 {
-	"HOST" : "controller",
+	"HOST" : {
+		"NAME" : "controller"
+	},
 	"PRIVCERT" : "certs/private.pem",
 	"PASSPHRASE" : "Hallo123!",
 	"CLIENTCERTDIR" : "certs/clients/",

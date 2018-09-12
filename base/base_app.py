@@ -17,7 +17,8 @@ def create_app(Host, config_path):
 	app.config['BaseDir'] = os.path.dirname(os.path.realpath(__file__))
 	app.config['PRIVCERT'] = os.path.join(app.config['BaseDir'],app.config['PRIVCERT'])
 	app.config['CLIENTCERTDIR'] = os.path.join(app.config['BaseDir'],app.config['CLIENTCERTDIR'])
-	app.config['UUID'] = open(app.config['UUID_PATH']).read()
+	if app.config['HOST']['NAME'] == 'node':
+		app.config['HOST']['UUID'] = open(app.config['UUID_PATH']).read()
 
 
 	# Logging
