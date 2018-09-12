@@ -61,7 +61,7 @@ class Node(BaseHandler):
     #        return wrapper
 
     #@testNoodle
-    def setValue(self, options, data):
+    def setValue(self, options, data, request):
         if "id" in options:
             noodle = self.noodles.get(options["id"], False)
             if noodle:
@@ -71,7 +71,7 @@ class Node(BaseHandler):
         else:
             raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
 
-    def setAll(self, options, data):
+    def setAll(self, options, data, request):
         if "id" in options:
             noodle = self.noodles.get(options["id"], False)
             if noodle:
@@ -81,7 +81,7 @@ class Node(BaseHandler):
         else:
             raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
     
-    def setValuesAsDictionary(self, options, data):
+    def setValuesAsDictionary(self, options, data, request):
         if "id" in options:
             noodle = self.noodles.get(options["id"], False)
             if noodle:
@@ -91,7 +91,7 @@ class Node(BaseHandler):
         else:
             raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
 
-    def getMainValue(self, options, data):        
+    def getMainValue(self, options, data, request):        
         if "id" in options:
             noodle = self.noodles.get(options["id"], False)
             if noodle:
@@ -101,7 +101,7 @@ class Node(BaseHandler):
         else:
             raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
     
-    def getValue(self, options, data):        
+    def getValue(self, options, data, request):        
         if "id" in options:
             noodle = self.noodles.get(options["id"], False)
             if noodle:
@@ -111,7 +111,7 @@ class Node(BaseHandler):
         else:
             raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
 
-    def getValuesAsDictionary(self, options, data):        
+    def getValuesAsDictionary(self, options, data, request):        
         if "id" in options:
             noodle = self.noodles.get(options["id"], False)
             if noodle:

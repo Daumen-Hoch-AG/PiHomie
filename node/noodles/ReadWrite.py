@@ -80,33 +80,34 @@ class Writer(Actor):
 
 	def setValue(self, options, data):
 		"""Inhalt an eine bestimmte Stelle in einer Datei schreiben"""
+		#TODO: Datei anlegen und Leerzeilen erstellen, wenn noch nicht vorhanden
 		r = self.setValuesAsDictionary(options, data)
 		return ({}, 200) if r else ({}, 400)
 
 
 	def setValuesAsDictionary(self, options, data):
 		"""Mehrere Inhalte an mehrere Stellen einer Datei schreiben"""
-		content = self.readItByLine()
-		for line, payload in data.items():
-			try:
-				int(line)
-				content[line] = payload
-			except:
-				self.LOG['warning']("Die Zeilenbezeichnung '{}' ist kein Integer".format(line))
-				continue
-		self.setAll({}, {'payload': content})
+		#TODO: Zeilen an Datei anfügen mit Leerzeilen wenn zu wenig
+		path = os.path.join(self.workspace, self.file)
+		if os.path.exists(path):
+			linenumber = 0
+			new_content = list()
+			with open(path, 'r') as f:
+				for line in f:
+					linenumber += 1
+					if str(linenumber) in data.keys():
+						new_content.append(data[str(linenumber)])
+					else:
+						new_content.append(line)
+			
+			with open(path, 'w') as f:
+				for line in new_content:
+					f.write(line)
+		else:
+			raise IOError("Die Datei existiert noch nicht")
+
 		return {}, 200
 
-
-	def readItByLine(self):
-		"""Hilfsfunktion: Inhalt der Dateie in einem Zeilen-Dictionary"""
-		result_dict = {}
-		linenumber = 0
-		with open(os.path.join(self.workspace, self.file), 'r') as f:
-			for line in f:
-				linenumber += 1
-				result_dict[linenumber] = line
-		return result_dict
 
 
 if __name__ == "__main__":
