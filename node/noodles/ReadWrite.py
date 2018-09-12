@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import Generic, os
+from .Generic import Sensor, Actor
+import os
 
 
-class Reader(Generic.Sensor):
+class Reader(Sensor):
 	"""Inhalte aus einer Datei lesen (Test-Sensor)"""
 
-	def __init__(self, options, data):
-		super(Generic.Sensor, self).__init__(options, data)
+	def __init__(self, options, data, callback):
+		super().__init__(options, data, callback)
 		self.workspace = data.get('workspace', "/tmp")
 		self.file = data.get('file', "ReadWriter"+str(self.id))
-		self.LOG['info']( "Hi, {} {} initialisiert (Klasse: Reader)".format( self.getTypeId(), self.id) )
 
 
 	def getValuesAsDictionary(self, options):
@@ -58,14 +58,13 @@ class Reader(Generic.Sensor):
 
 
 
-class Writer(Generic.Actor):
+class Writer(Actor):
 	"""Inhalt in eine Datei schreiben (Test-Aktor)"""
 
-	def __init__(self, options, data):
-		super(Generic.Actor, self).__init__(options, data)
+	def __init__(self, options, data, callback):
+		super().__init__(options, data, callback)
 		self.workspace = data.get('workspace', "/tmp")
 		self.file = data.get('file', "ReadWriter"+str(self.id))
-		self.LOG['info']( "Hi, {} {} initialisiert (Klasse: Writer)".format( self.getTypeId(), self.id) )
 
 
 	def setAll(self, options, data):
