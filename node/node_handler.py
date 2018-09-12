@@ -33,7 +33,7 @@ class Node(BaseHandler):
     def init_node(self):
         '''Erste Kontaktaufnahme mit dem Server, Initialisierung der Noodles.'''
         message = {"command":"init_node", "options":{"uuid":self.uuid},"data":{}}
-        r = requests.get(self.controller_endpoint, json=json.dumps(message))
+        r = requests.get(self.controller_endpoint, json=message)
         if r.status_code == 200:
             #Initialisieren
             #Ausgehend von Response im Format, bsp: OK-200 {'options':{},'data':[{

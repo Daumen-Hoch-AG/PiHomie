@@ -20,6 +20,8 @@ class BaseHandler(object):
 
             #JSON aus dem Request ziehen
             message = request.get_json()
+            print(message)
+            print(type(message))
             #Wenn request.get_json() None zurückgibt -> nicht json formatiert
             if message is None:
                 raise KeyError("Der Request hat das falsche Format.")

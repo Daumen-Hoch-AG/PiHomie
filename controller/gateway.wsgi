@@ -19,5 +19,5 @@ application = create_app(Controller, config_path)
 
 
 ### DEBUG ###
-application.run(debug=True)
+application.run(debug=True, host='0.0.0.0')
 ### DEBUG ###
