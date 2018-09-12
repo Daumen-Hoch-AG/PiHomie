@@ -11,6 +11,7 @@ class Reader(Generic.Sensor):
 		super(Generic.Sensor, self).__init__(options, data)
 		self.workspace = data.get('workspace', "/tmp")
 		self.file = data.get('file', "ReadWriter"+str(self.id))
+		self.LOG['info']( "Hi, {} {} initialisiert (Klasse: Reader)".format( self.getTypeId(), self.id) )
 
 
 	def getValuesAsDictionary(self, options):
@@ -31,13 +32,14 @@ class Reader(Generic.Sensor):
 						result_dict[linenumber] = line
 				else:
 					result_dict[linenumber] = line
-		return result_dict
+		return result_dict, 200
 
 
 	def getMainValue(self, options):
 		"""Gesamter Inhalt der Datei"""
 		with open( os.path.join(self.workspace, self.file), 'r' ) as f:
-			return f.read()
+			result = f.read()
+		return {'result':result}, 200
 
 
 	def getValue(self, options):
@@ -45,7 +47,7 @@ class Reader(Generic.Sensor):
 		bezeichner = options.get('bezeichner', False)
 		if not bezeichner:
 			raise KeyError("Methode benötigt eine Option 'bezeichner' die die Zeilennummer angibt!")
-		return self.getValuesAsDictionary( {'mode': 'one', 'start': bezeichner} )[bezeichner]
+		return self.getValuesAsDictionary( {'mode': 'one', 'start': bezeichner} ), 200
 
 
 	def alert(self, data, options):
@@ -63,35 +65,24 @@ class Writer(Generic.Actor):
 		super(Generic.Actor, self).__init__(options, data)
 		self.workspace = data.get('workspace', "/tmp")
 		self.file = data.get('file', "ReadWriter"+str(self.id))
+		self.LOG['info']( "Hi, {} {} initialisiert (Klasse: Writer)".format( self.getTypeId(), self.id) )
 
 
 	def setAll(self, options, data):
 		"""Inhalt in eine Datei (über-)schreiben"""
 		payload = data.get('payload', False)
 		if not payload:
-			#TODO: Logeintrag
 			raise KeyError("Methode benötigt Daten 'payload' für den Dateiinhalt!")
 		else:
 			with open(os.path.join(self.workspace, self.file), 'w') as f:
-				return f.write(payload)
+				f.write(payload)
+				return {}, 200
 
 
 	def setValue(self, options, data):
 		"""Inhalt an eine bestimmte Stelle in einer Datei schreiben"""
-		linenumber = data.get("line", False)
-		if not linenumber:
-			#TODO: Logeintrag
-			raise KeyError("Methode benötigt Daten in Verbindung mit einer Zeilennummer!")
-		content = self.readItByLine()
-		for line, payload in data.items():
-			try:
-				int(line)
-				content[line] = payload
-			except:
-				#TODO: Logeintrag
-				continue
-		self.setAll({}, {'payload':content})
-		return True
+		r = self.setValuesAsDictionary(options, data)
+		return ({}, 200) if r else ({}, 400)
 
 
 	def setValuesAsDictionary(self, options, data):
@@ -102,10 +93,10 @@ class Writer(Generic.Actor):
 				int(line)
 				content[line] = payload
 			except:
-				#TODO: Logeintrag
+				self.LOG['warning']("Die Zeilenbezeichnung '{}' ist kein Integer".format(line))
 				continue
 		self.setAll({}, {'payload': content})
-		return True
+		return {}, 200
 
 
 	def readItByLine(self):

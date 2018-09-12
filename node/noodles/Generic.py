@@ -1,18 +1,36 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-class Actor(object):
+from flask import current_app
+
+
+class Noodle(object):
+	"""Allgemeine Noodle Definition"""
+
+	def __init__(self, options, data, callback):
+		self.id = options.get('id', False)
+		self.callback = callback
+		self.LOG = {
+			'info': current_app.logger.info,
+			'warning': current_app.logger.warning,
+			'error': current_app.logger.error,
+		}
+		self.LOG['info']( "Hi, {} {} initialisiert (Klasse: Noodle)".format( self.getTypeId(), self.id) )
+
+	@classmethod
+	def getTypeId(cls):
+		return cls.__name__
+
+
+class Actor(Noodle):
 	"""Schnittstellendefinition für Actoren"""
 	def __init__(self, options, data, callback):
-		self.id = options.get(id, False)
-		self.callback = callback
-		#self.HOMIE.logs('STATUS', "Hello, I am the ACTOR {} and my ID is {}".format(nickname, id))
-	
+		super().__init__(options, data, callback)
+
 	def setValue(self, options, data):
 		pass
 
 	def setValuesAsDictionary(self, options, data):
-		#self.HOMIE.logs('ERROR', "Es konnten keine Werte gesetzt werden, da die Methode dafür noch nicht definiert ist. Werte: {}".format(valDict))
 		pass
 	
 	def alert(self, data, options):
@@ -20,29 +38,22 @@ class Actor(object):
 
 	def configure(self):
 		pass
-	
-	@classmethod
-	def getTypeId(cls):
-		return cls.__name__
+
 
 
 class Sensor(object):
 	"""Schnittstellendefinition für Sensor"""
 	def __init__(self, options, data, callback):
-		self.id = options.get(id, False)
-		self.callback = callback
-		#self.HOMIE.logs('STATUS', "Hello, I am the SENSOR {} and my ID is {}".format(nickname, id))
+		super().__init__(options, data, callback)
+
 
 	def getMainValue(self, options):
-		#self.HOMIE.logs('ERROR', "Der Hauptwert für dieses Gerät konnte nicht zurückgegeben werden, da die Methode noch nicht definiert ist.")
 		pass
 
 	def getValuesAsDictionary(self, options):
-		#self.HOMIE.logs('ERROR', "Die Werte konnte nicht zurückgegeben werden, da die Methode dafür noch nicht definiert ist.")
 		pass
 
 	def getValue(self, options):
-		#self.HOMIE.logs('ERROR', "Der Wert für den Schlüssel '{}' konnte nicht zurückgegeben werden, da die Methode dafür noch nicht definiert ist.".format(bezeichner))
 		pass
 
 	def alert(self, data, options):
