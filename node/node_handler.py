@@ -18,7 +18,7 @@ class Node(BaseHandler):
         port = current_app.config['CONTROLLER']['PORT']
         self.uuid = current_app.config['UUID'] #Setzt uuid aus Config
         self.controller_endpoint = "http://{}:{}/api".format(host,port)
-        self.dict = {
+        self.handler = {
             "setValue" : self.setValue,
             "setAll" : self.setAll,
             "setValuesAsDictionary" : self.setValuesAsDictionary,
