@@ -3,7 +3,7 @@ from flask import current_app
 import requests, uuid, json
 
 #TODO: Noodle definitionen und Liste Zentral ablegen?
-from .noodles import *
+from node.noodles import *
 
 class Node(BaseHandler):
     def __init__(self):
@@ -24,8 +24,8 @@ class Node(BaseHandler):
             "getValue" : self.getValue,
         }
         self.noodle_classes = {
-            ReadWriter.Writer.getTypeId():ReadWriter.Writer,
-            ReadWriter.Reader.getTypeId():ReadWriter.Reader,
+            ReadWrite.Writer.getTypeId():ReadWrite.Writer,
+            ReadWrite.Reader.getTypeId():ReadWrite.Reader,
         }
 
         self.noodles = dict()
@@ -36,8 +36,8 @@ class Node(BaseHandler):
         r = requests.get(self.controller_endpoint, json=json.dumps(message))
         if r.status_code == 200:
             #Initialisieren
-            #Ausgehend von Response im Format, bsp: OK-200 {'options':{},'data':{[{
-            # 'type':'Writer', 'options':{...}, 'data':{...}}]}
+            #Ausgehend von Response im Format, bsp: OK-200 {'options':{},'data':[{
+            # 'type':'Writer', 'options':{...}, 'data':{...}},]}
             for noodle in r["data"]:
                 n = self.noodle_classes.get(noodle['type'],False)
                 if n:
