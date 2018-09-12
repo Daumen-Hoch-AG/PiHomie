@@ -1,5 +1,12 @@
 {
-	"HOST" : "node",
+	"HOST" : {
+		"NAME" : "node",
+		"UUID_PATH" : "uuid.id"
+	},
+	"CONTROLLER" : {
+		"HOST" : "Controller",
+		"PORT" : "80"
+	},
 	"PRIVCERT" : "certs/private.pem",
 	"PASSPHRASE" : "Hallo123!",
 	"CLIENTCERTDIR" : "certs/clients/",
