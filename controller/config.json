@@ -4,7 +4,7 @@
 	"PASSPHRASE" : "Hallo123!",
 	"CLIENTCERTDIR" : "certs/clients/",
 	"SQLALCHEMY_DATABASE_URI" : "sqlite:////tmp/test.db",
-	"SQLALCHEMY_TRACK_MODIFICATIONS" : "False",
+	"SQLALCHEMY_TRACK_MODIFICATIONS" : "false",
 	"LOGGING" : {
 		"STANDARD" : "/var/log/pihomie/info.log",
 		"WARNING" : "/var/log/pihomie/warning.log",
