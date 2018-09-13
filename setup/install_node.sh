@@ -41,10 +41,12 @@ done
 # =============================
 
 echo
-echo "> Gib den Hostname für diesen Controller ein oder lasse ihn leer für '${HOSTNAME}' - [ENTER]"
+echo "> Gib den Hostname für dieses System ein oder lasse ihn leer, um ihn nicht zu ändern - [ENTER]"
 read user_hostname
 if [[ ! -z "$user_hostname" ]]; then
 	HOSTNAME=$user_hostname
+	hostname -b $HOSTNAME
+	sed -i -e "/127\.0\.1\.1/ s/.*/127\.0\.1\.1\t${HOSTNAME}/g" /etc/hosts
 fi
 
 
@@ -82,10 +84,6 @@ cd $ROOT_PATH
 
 
 # Konfigurationen
-
-# -- Hostname
-hostname -b $HOSTNAME
-sed -i -e "/127\.0\.1\.1/ s/.*/127\.0\.1\.1\t${HOSTNAME}/g" /etc/hosts
 
 # -- Apache2
 a2enmod wsgi
