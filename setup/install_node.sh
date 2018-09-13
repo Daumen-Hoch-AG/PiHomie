@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# Installation des PiHomie Controllers
+# Installation des PiHomie Node
 # auf einem Raspian Stretch (Lite)
 
 # Sudo Check:
@@ -15,7 +15,7 @@ modules=()
 SCRIPT_PATH="`dirname \"$0\"`"
 SCRIPT_PATH="`( cd \"$SCRIPT_PATH\" && pwd )`"
 ROOT_PATH="`( cd \"$SCRIPT_PATH/..\" && pwd )`"
-HOSTNAME="HomieController"
+HOSTNAME="HomieNode"
 LOGPATH="/var/log/pihomie"
 PORT="5000"
 
@@ -24,7 +24,7 @@ echo
 echo "================================"
 echo "====== PiHomie Installtion ====="
 echo "================================"
-echo "           Controller"
+echo "             Node"
 echo "--------------------------------"
 echo
 echo "Module:"
@@ -41,7 +41,7 @@ done
 # =============================
 
 echo
-echo "> Gib den Hostname für diesen Controller ein oder lasse ihn leer für 'PiHomie' - [ENTER]"
+echo "> Gib den Hostname für diesen Controller ein oder lasse ihn leer für '${HOSTNAME}' - [ENTER]"
 read user_hostname
 if [[ ! -z "$user_hostname" ]]; then
 	HOSTNAME=$user_hostname
@@ -125,7 +125,7 @@ done
 # =============================
 echo
 echo "================================"
-echo "PiHomie Controller wurde"
+echo "PiHomie Node wurde"
 echo "erfolgreich eingerichtet !"
 echo "================================"
 echo
