@@ -92,7 +92,7 @@ sed -i -e "s|%%HOSTNAME%%|${HOSTNAME}|" $SCRIPT_PATH/apache_vhost.conf
 sed -i -e "s|%%PORT%%|${PORT}|" $SCRIPT_PATH/apache_vhost.conf
 sed -i -e "s|%%PIHOMIE_ROOT%%|${ROOT_PATH}/controller|" $SCRIPT_PATH/apache_vhost.conf
 sed -i -e "s|%%PIHOMIE_GATEWAY%%|${ROOT_PATH}/controller/gateway.wsgi|" $SCRIPT_PATH/apache_vhost.conf
-mv $SCRIPT_PATH/apache_vhost.conf /etc/apache2/sites-available/pihomie.conf
+cp $SCRIPT_PATH/apache_vhost.conf /etc/apache2/sites-available/${HOSTNAME}.conf
 a2ensite pihomie
 service apache2 reload
 
