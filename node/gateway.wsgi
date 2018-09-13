@@ -17,5 +17,5 @@ config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.
 application = create_app(Node, config_path)
 
 ### DEBUG ###
-application.run(debug=True, host="0.0.0.0")
+application.run(debug=True, host="0.0.0.0", port=3000)
 ### DEBUG ###

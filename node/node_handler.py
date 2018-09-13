@@ -1,6 +1,7 @@
 from base.base_handler import BaseHandler
 from flask import current_app
 import requests, uuid, json
+from functools import wraps
 
 #TODO: Noodle definitionen und Liste Zentral ablegen?
 from node.noodles import ReadWrite
@@ -47,77 +48,42 @@ class Node(BaseHandler):
         else:
             raise Exception("Node konnte nicht initialisiert werden, für Details siehe Logs des Controllers bzw. des Nodes!")
         
-
-    #def testNoodle(self, func):
-    #    def wrapper(*args, **kwargs):
-    #        if "id" in options:
-    #            noodle = noodles.get(options["id"], False)
-    #            if noodle:
-    #                func(*args, **kwargs)
-    #            else:
-    #                return False #TODO: Qualifizerte Antwort als JSON
-    #        else:
-    #            return False #TODO: Qualifizierte Antwort als JSON
-    #        return wrapper
-
-    #@testNoodle
-    def setValue(self, options, data, request):
-        if "id" in options:
-            noodle = self.noodles.get(options["id"], False)
-            if noodle:
-                return noodle.setValue(options, data)
+    #Decorator für alle Aktionen die an einen Noodle gerichtet sind.
+    #Die eigentliche Funktion bekommt durch den Decorator den zusätzlichen Parameter "noodle".
+    #Aufgerufen wird diese aber nur mit den drei Parametern die der Wrapper erwartet!!
+    def noodle_action(original_func):
+        @wraps(original_func)
+        def wrapper(self, options, data, request):
+            if "id" in options:
+                noodle = self.noodles.get(options["id"], False)
+                if noodle:
+                    return original_func(self, options, data, request, noodle)
+                else:
+                    raise Exception("Noodle im Node nicht bekannt!") #TODO: Eigene Exception bauen
             else:
-                raise Exception("Noodle im Node nicht bekannt!") #TODO: Eigene Exception bauen
-        else:
-            raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
+                raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
+        return wrapper
 
-    def setAll(self, options, data, request):
-        if "id" in options:
-            noodle = self.noodles.get(options["id"], False)
-            if noodle:
-                return noodle.setAll(options, data)
-            else:
-                raise Exception("Noodle im Node nicht bekannt!") #TODO: Eigene Exception bauen
-        else:
-            raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
+    @noodle_action
+    def setValue(self, options, data, request, noodle):
+        return noodle.setValue(options, data)
+
+    @noodle_action
+    def setAll(self, options, data, request, noodle):
+        return noodle.setAll(options, data)
     
-    def setValuesAsDictionary(self, options, data, request):
-        if "id" in options:
-            noodle = self.noodles.get(options["id"], False)
-            if noodle:
-                return noodle.setValuesAsDictionary(options, data)
-            else:
-                raise Exception("Noodle im Node nicht bekannt!") #TODO: Eigene Exception bauen
-        else:
-            raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
+    @noodle_action
+    def setValuesAsDictionary(self, options, data, request, noodle):
+        return noodle.setValuesAsDictionary(options, data)
 
-    def getMainValue(self, options, data, request):        
-        if "id" in options:
-            noodle = self.noodles.get(options["id"], False)
-            if noodle:
-                return noodle.getMainValue(options)
-            else:
-                raise Exception("Noodle im Node nicht bekannt!") #TODO: Eigene Exception bauen
-        else:
-            raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
+    @noodle_action
+    def getMainValue(self, options, data, request, noodle):        
+        return noodle.getMainValue(options)
     
-    def getValue(self, options, data, request):        
-        if "id" in options:
-            noodle = self.noodles.get(options["id"], False)
-            if noodle:
-                return noodle.getValue(options)
-            else:
-                raise Exception("Noodle im Node nicht bekannt!") #TODO: Eigene Exception bauen
-        else:
-            raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
+    @noodle_action
+    def getValue(self, options, data, request, noodle):        
+        return noodle.getValue(options)
 
-    def getValuesAsDictionary(self, options, data, request):        
-        if "id" in options:
-            noodle = self.noodles.get(options["id"], False)
-            if noodle:
-                return noodle.getValuesAsDictionary(options)
-            else:
-                raise Exception("Noodle im Node nicht bekannt!") #TODO: Eigene Exception bauen
-        else:
-            raise Exception("Das Feld Noodle ID fehlt!") #TODO: Eigene Exception erstellen
-
+    @noodle_action
+    def getValuesAsDictionary(self, options, data, request, noodle):        
+        return noodle.getValuesAsDictionary(options)
