@@ -8,8 +8,8 @@
 	"SQLALCHEMY_DATABASE_URI" : "sqlite:////tmp/test.db",
 	"SQLALCHEMY_TRACK_MODIFICATIONS" : "false",
 	"LOGGING" : {
-		"STANDARD" : "/tmp/pihomie/c_info.log",
-		"WARNING" : "/tmp/pihomie/c_warning.log",
-		"SQL" : "/tmp/pihomie/c_error.log"
+		"STANDARD" : "/var/log/pihomie/c_info.log",
+		"WARNING" : "/var/log/pihomie/c_warning.log",
+		"SQL" : "/var/log/pihomie/c_error.log"
 	}
 }
