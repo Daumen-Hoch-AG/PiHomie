@@ -19,20 +19,21 @@ class Reader(Sensor):
 		"""Inhalt der Dateie in einem Zeilen-Dictionary"""
 		result_dict = {}
 		linenumber = 0
-		mode = options.get('mode', "all")
+		mode = options.get('mode', 'all')
 		startLine = options.get('start', False)
 		endLine = options.get('end', False)
 		with open( self.path, 'r' ) as f:
 			for line in f:
 				linenumber += 1
-				if mode == "range":
-					if linenumber >= startLine and linenumber <= endLine:
-						result_dict[linenumber] = line
-				elif mode == "one":
-					if linenumber == startLine:
-						result_dict[linenumber] = line
+				lineKey = str(linenumber)
+				if mode == 'range':
+					if lineKey >= startLine and lineKey <= endLine:
+						result_dict[lineKey] = line
+				elif mode == 'one':
+					if lineKey == startLine:
+						result_dict[lineKey] = line
 				else:
-					result_dict[linenumber] = line
+					result_dict[lineKey] = line
 		return result_dict, 200
 
 
@@ -48,12 +49,12 @@ class Reader(Sensor):
 		bezeichner = options.get('bezeichner', False)
 		if not bezeichner:
 			raise KeyError("Methode benötigt eine Option 'bezeichner' die die Zeilennummer angibt!")
-		return self.getValuesAsDictionary( {'mode': 'one', 'start': bezeichner} ), 200
+		return self.getValuesAsDictionary( {'mode': 'one', 'start': bezeichner} )
 
 
 	def alert(self, data, options):
 		"""Methode für proaktive Rückmeldung bei Änderung in der Datei"""
-		# Check / Poll / ...
+		#TODO: Polling und Callback implementieren
 		#self.callback()
 		pass
 
@@ -82,8 +83,7 @@ class Writer(Actor):
 
 	def setValue(self, options, data):
 		"""Inhalt an eine bestimmte Stelle in einer Datei schreiben"""
-		result = self.setValuesAsDictionary(options, data)
-		return ({}, 200) if result else ({}, 400)
+		return self.setValuesAsDictionary(options, data)
 
 
 	def setValuesAsDictionary(self, options, data):

@@ -40,7 +40,7 @@ class Actor(Noodle):
 		pass
 
 
-class Sensor(object):
+class Sensor(Noodle):
 	"""Schnittstellendefinition für Sensor"""
 	def __init__(self, options, data, callback):
 		super().__init__(options, data, callback)
