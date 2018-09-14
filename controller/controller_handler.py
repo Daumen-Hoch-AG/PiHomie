@@ -21,7 +21,7 @@ class Controller(BaseHandler):
 	def init_node(self, options, data, request):
 		#Dummy Response
 		#Eigentlich: DB-> Ist Node vorhanden, wenn Ja, return Liste mit Noodles
-		return [{'type':'Writer','options':{'id':123},'data':{}}], 200
+		return [{'type':'Writer','options':{'id':235},'data':{}}], 200
 
 	def handle_test(self, data, request):
 		current_app.logger.info("Test handled")

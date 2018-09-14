@@ -11,7 +11,8 @@ class Reader(Sensor):
 	def __init__(self, options, data, callback):
 		super().__init__(options, data, callback)
 		self.workspace = data.get('workspace', "/tmp")
-		self.file = data.get('file', "ReadWriter"+str(self.id))
+		self.file = data.get('file', "ReadWriter"+str(self.id)+".tmp")
+		self.path = os.path.join(self.workspace, self.file)
 
 
 	def getValuesAsDictionary(self, options):
@@ -21,7 +22,7 @@ class Reader(Sensor):
 		mode = options.get('mode', "all")
 		startLine = options.get('start', False)
 		endLine = options.get('end', False)
-		with open( os.path.join(self.workspace, self.file), 'r' ) as f:
+		with open( self.path, 'r' ) as f:
 			for line in f:
 				linenumber += 1
 				if mode == "range":
@@ -37,7 +38,7 @@ class Reader(Sensor):
 
 	def getMainValue(self, options):
 		"""Gesamter Inhalt der Datei"""
-		with open( os.path.join(self.workspace, self.file), 'r' ) as f:
+		with open( self.path, 'r' ) as f:
 			result = f.read()
 		return {'result':result}, 200
 
@@ -64,7 +65,8 @@ class Writer(Actor):
 	def __init__(self, options, data, callback):
 		super().__init__(options, data, callback)
 		self.workspace = data.get('workspace', "/tmp")
-		self.file = data.get('file', "ReadWriter"+str(self.id))
+		self.file = data.get('file', "ReadWriter"+str(self.id)+".tmp")
+		self.path = os.path.join(self.workspace, self.file)
 
 
 	def setAll(self, options, data):
@@ -73,38 +75,42 @@ class Writer(Actor):
 		if not payload:
 			raise KeyError("Methode benötigt Daten 'payload' für den Dateiinhalt!")
 		else:
-			with open(os.path.join(self.workspace, self.file), 'w') as f:
+			with open(self.path, 'w') as f:
 				f.write(payload)
 				return {}, 200
 
 
 	def setValue(self, options, data):
 		"""Inhalt an eine bestimmte Stelle in einer Datei schreiben"""
-		#TODO: Datei anlegen und Leerzeilen erstellen, wenn noch nicht vorhanden
-		r = self.setValuesAsDictionary(options, data)
-		return ({}, 200) if r else ({}, 400)
+		result = self.setValuesAsDictionary(options, data)
+		return ({}, 200) if result else ({}, 400)
 
 
 	def setValuesAsDictionary(self, options, data):
 		"""Mehrere Inhalte an mehrere Stellen einer Datei schreiben"""
-		#TODO: Zeilen an Datei anfügen mit Leerzeilen wenn zu wenig
-		path = os.path.join(self.workspace, self.file)
-		if os.path.exists(path):
-			linenumber = 0
-			new_content = list()
-			with open(path, 'r') as f:
+		oldContent = dict()
+		if os.path.exists(self.path):
+			lineNumber = 0
+			# Read
+			with open(self.path, 'r') as f:
 				for line in f:
-					linenumber += 1
-					if str(linenumber) in data.keys():
-						new_content.append(data[str(linenumber)])
-					else:
-						new_content.append(line)
-			
-			with open(path, 'w') as f:
-				for line in new_content:
-					f.write(line)
-		else:
-			raise IOError("Die Datei existiert noch nicht")
+					lineNumber += 1
+					lineKey = str(lineNumber)
+					oldContent[lineKey] = line
+			# Merge
+			data = {**oldContent, **data}
+
+		# Write
+		with open(self.path, 'w') as f:
+			max_data = int( max(data, key=int) )
+			max_old = int( max(oldContent, key=int) )
+			lastLine = max_data if max_data > max_old else max_old
+			for i in range(1, lastLine+1):
+				line = str(i)
+				if line in data:
+					f.write(data[line])
+				else:
+					f.write("\n")
 
 		return {}, 200
 

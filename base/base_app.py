@@ -63,6 +63,6 @@ def create_app(Host, config_path):
 			return '', code
 	
 
-	app.logger.info("Controller wurde gestartet")
+	app.logger.info("PiHomie Prozess wurde gestartet")
 	
 	return app
