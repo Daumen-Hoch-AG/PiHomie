@@ -1,0 +1,17 @@
+{
+    "HOST": {
+        "NAME": "ui"
+    },
+    "CONTROLLER": {
+        "HOST": "localhost",
+        "PORT": "5000"
+    },
+    "PRIVCERT": "certs/private.pem",
+    "PASSPHRASE": "Hallo123!",
+    "CLIENTCERTDIR": "certs/clients/",
+    "LOGGING": {
+        "STANDARD": "/var/log/pihomie/u_info.log",
+        "WARNING": "/var/log/pihomie/u_warning.log",
+        "SQL": "/var/log/pihomie/u_error.log"
+    }
+}
